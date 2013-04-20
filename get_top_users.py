@@ -1,8 +1,12 @@
+"""
+Author - Garima Agarwal
+"""
 import os
 import sys
 import json
 import curl
 import pycurl
+import time
 import urllib
 import pprint
 import marshal
@@ -13,7 +17,7 @@ from subprocess import Popen, PIPE
 pp = pprint.PrettyPrinter(depth = 6)
 
 class processUserData():
-    def __init__(self, directory, user_filename="user", project_filename="project", users_per_file=5000):
+    def __init__(self, directory, user_filename="user", project_filename="project", users_per_file=1000):
         self.user_filename_base = user_filename
         self.project_filename_base = project_filename
         self.current_user_filename = user_filename + "0"
@@ -22,6 +26,8 @@ class processUserData():
         self.users_per_file = users_per_file
         self.count_users = 0
         self.count_project = 0
+        self.user_file_count = 1
+        self.project_file_count = 1
         self.user_data = []
         self.project_data = []
         
@@ -33,12 +39,17 @@ class processUserData():
         file_handle.close()
         
     def parse_repo_data(self, data):
+        print "Parsing repo data"
         self.count_project += len(data)
         self.project_data.extend(data)
 
-        if self.count_project % self.users_per_file == 0:
+        if self.count_project > self.users_per_file:
+            print "Dumping project data"
             self.dump_data(self.project_data, self.current_project_filename)
-            self.current_project_filename = self.project_filename_base + str(self.count_project / self.users_per_file)
+            self.project_data = []
+            self.current_project_filename = self.project_filename_base + str(self.project_file_count)
+            self.project_file_count += 1
+            self.count_project = 0
         
     """
     Parses user data and dump the data to a file
@@ -53,9 +64,12 @@ class processUserData():
             self.count_users += 1
             follower_count = user["followers_count"]
         
-        if self.count_users % self.users_per_file == 0:
+        if self.count_users > self.users_per_file:
             self.dump_data(self.user_data, self.current_user_filename)
-            self.current_user_filename = self.user_filename_base + str(self.count_users / self.users_per_file)
+            self.user_data = []
+            self.count_users = 0
+            self.current_user_filename = self.user_filename_base + str(self.user_file_count)
+            self.user_file_count += 1
         return users, follower_count
         
 
@@ -83,24 +97,30 @@ class createRequest():
         return self.curl_cmd(url, params) 
 
     def curl_cmd(self, url, header_params = None, post_params=None):     
-        write_buf = cStringIO.StringIO()
-        c = pycurl.Curl()
-        c.setopt(pycurl.URL, url)
-        c.setopt(pycurl.USERPWD, "%s:%s" %(self.user_id, self.pwd))
-        c.setopt(c.WRITEFUNCTION, write_buf.write)
+        while True:
+            write_buf = cStringIO.StringIO()
+            c = pycurl.Curl()
+            c.setopt(pycurl.URL, url)
+            c.setopt(pycurl.USERPWD, "%s:%s" %(self.user_id, self.pwd))
+            c.setopt(c.WRITEFUNCTION, write_buf.write)
 
-        if header_params != None:
-            c.setopt(pycurl.HTTPHEADER, header_params)
+            if header_params != None:
+                c.setopt(pycurl.HTTPHEADER, header_params)
         
 
-        if post_params != None:
-            c.setopt(pycurl.POSTFIELDS, post_params)
+            if post_params != None:
+                c.setopt(pycurl.POSTFIELDS, post_params)
 
-        c.perform()
-        buf = write_buf.getvalue()
-        http_code = c.getinfo(pycurl.HTTP_CODE)
+            c.perform()
+            buf = write_buf.getvalue()
+            http_code = c.getinfo(pycurl.HTTP_CODE)
+            if http_code == 500 or http_code == 501 or http_code == 502 or http_code == 503 or http_code == 504:
+                time.sleep(600)
+            else:
+                break
 
         if http_code != 200 and http_code != 201:
+            print http_code
             print "Error in the curl request. %s" %(buf)
             return None
 
@@ -133,22 +153,36 @@ class createRequest():
             print "url is ", repo_url
             params = ["Authorization: token " + str(self.token)]
             repos = self.curl_cmd(repo_url, params)
+            if repos == None:
+                continue
             repos = json.loads(repos)
             new_repos = []
             for repo in repos:
                 contributors_url = str(repo['contributors_url'])
                 contributors = self.auth_curl_cmd(contributors_url)
+                if contributors == None:
+                    continue
                 repo['contributors'] = json.loads(contributors)
                 languages_url = str(repo['languages_url'])
                 languages = self.auth_curl_cmd(contributors_url)
                 repo['languages'] = json.loads(languages)
                 commit_url = "https://api.github.com/repos/" + str(user) + "/" + str(repo['name']) + "/commits"
                 commits = self.auth_curl_cmd(commit_url)
+                if commits == None:
+                    continue
+
                 commits = self.get_commits(commits)
                 repo['commits'] = commits
+                
+                readme_url = "https://api.github.com/repos/" + str(user) + "/" + str(repo['name']) + "/readme"
+                print "readme url is", readme_url    
+                readme = self.auth_curl_cmd(readme_url)
+                if readme != None:
+                    repo['readme'] = json.loads(readme)
+                else: 
+                    repo['readme'] = []
                 new_repos.append(repo)
-            repos.extend(new_repos)
-        self.parser.parse_repo_data(repos)
+            self.parser.parse_repo_data(new_repos)
 
     def get_top_users_with_followers(self, number_users, follower_count_cap):
         MAX_COUNT = 1000
