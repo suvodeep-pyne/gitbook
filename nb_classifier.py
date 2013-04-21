@@ -67,7 +67,7 @@ class NaiveBayesClassifier():
         return predicted_prob
             
 if __name__ == "__main__":        
-    nb = NaiveBayesClassifier('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
+    nb = NaiveBayesClassifier('train_data\\allterms', 'train_data\\dataset')
     nb.train()
     docs_new = ['data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery']
     nb.classify(docs_new)

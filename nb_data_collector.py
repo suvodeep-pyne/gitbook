@@ -32,8 +32,11 @@ class NaiveBayesDataCollector():
         
     def process_keywords(self):
         print 'Processing Keywords..'
-        self.keywords.update(self.read_file(self.keywords_path))
-        print 'Done.'
+        for root, subfolders, files in os.walk(self.keywords_path):
+            for filename in files:
+                if filename.endswith(".txt"):
+                    self.keywords.update(self.read_file(os.path.join(root, filename)))
+        print 'done.'
             
     def process_dataset(self):
         print 'Processing Dataset..'
@@ -61,7 +64,7 @@ class NaiveBayesDataCollector():
         print 'done.'
         
 if __name__ == "__main__":        
-    nb = NaiveBayesDataCollector('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
+    nb = NaiveBayesDataCollector('train_data\\allterms', 'train_data\\dataset')
     
     print
     print 'Keyword List:', nb.keywords
