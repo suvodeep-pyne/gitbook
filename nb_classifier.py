@@ -34,7 +34,7 @@ class NaiveBayesClassifier():
         print 'Running Count Vectorizer..'
         X_train_counts = self.count_vectorizer.fit_transform(self.documents)
         
-        print 'Headers:', self.count_vectorizer.get_feature_names()
+#        print 'Headers:', self.count_vectorizer.get_feature_names()
         print 'X_train_counts:\n', X_train_counts.toarray()
         print self.count_vectorizer.vocabulary_.get(u'algorithm')
         print 'count_vect.vocabulary_:', self.count_vectorizer.vocabulary_
@@ -67,13 +67,10 @@ class NaiveBayesClassifier():
         return predicted_prob
             
 if __name__ == "__main__":        
-    nb = NaiveBayesClassifier('train_data\\allterms', 'train_data\\dataset')
+    nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
     nb.train()
     docs_new = ['data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery']
     nb.classify(docs_new)
     
     print
-    print 'Keyword List:', nb.keywords
     print 'Target classes:', nb.target_classes
-    #for doc in nb.documents:
-    #    print doc

@@ -64,7 +64,7 @@ class NaiveBayesDataCollector():
         print 'done.'
         
 if __name__ == "__main__":        
-    nb = NaiveBayesDataCollector('train_data\\allterms', 'train_data\\dataset')
+    nb = NaiveBayesDataCollector('train_data\\vocabulary', 'train_data\\dataset')
     
     print
     print 'Keyword List:', nb.keywords
