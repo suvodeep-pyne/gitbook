@@ -1,6 +1,10 @@
 .project
 .pydevproject
+<<<<<<< HEAD
 *.tmp
 *.bak
 *.swp
 
+=======
+.pyc
+>>>>>>> fe7f43d4e86be1d9e5d0ff203ac59e1734c08aae
