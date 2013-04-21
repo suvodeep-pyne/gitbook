@@ -39,6 +39,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 tfidf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 print 'X_train_tfidf.shape:', X_train_tfidf.shape
+print 'X_train_tfidf:\n', X_train_tfidf.toarray()
 
 from sklearn.naive_bayes import MultinomialNB
 #clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
@@ -52,6 +53,7 @@ X_new_tfidf = tfidf_transformer.transform(X_new_counts)
 predicted = clf.predict(X_new_tfidf)
 predicted_prob = clf.predict_proba(X_new_tfidf)
 
+print
 print 'Prediction:'
 for doc, category in zip(docs_new, predicted):
 #    print '%r => %s' % (doc, twenty_train.target_names[category])

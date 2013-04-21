@@ -9,8 +9,5 @@ def NaiveBayesClassifier():
     
     def __init__(self, keywords_path, dataset_path):
         self.data_collector = NaiveBayesDataCollector(keywords_path, dataset_path)
-        
-    
-    def get_keywords(self, path):
-        
-        pass
+        self.keywords = self.data_collector.keywords
+        self.dataset = self.data_collector.dataset
