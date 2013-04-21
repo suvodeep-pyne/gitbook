@@ -10,6 +10,7 @@ import pprint as pp
 url = 'http://en.wikipedia.org/wiki/Machine_learning'
 
 CATEGORIES = [ 'Machine Learning', 'Artificial Intelligence']
+tokenizer_regex = "[a-zA-Z][a-zA-Z_-]+[a-zA-Z]";
 
 class NaiveBayesDataCollector():
     keywords = set()
@@ -26,7 +27,7 @@ class NaiveBayesDataCollector():
     
     def read_file(self, filepath):
         content = open(filepath, 'r').read()
-        words = re.findall("[a-zA-Z0-9]{3,}", content.lower())
+        words = re.findall(tokenizer_regex, content.lower())
         return words
         
     def process_keywords(self):
@@ -47,7 +48,7 @@ class NaiveBayesDataCollector():
                     fileSize += os.path.getsize(filepath)
     
                     feature = os.path.basename(root)
-                    doc_content = self.read_file(filepath)
+                    doc_content = open(filepath, 'r').read().lower()
                     
                     self.target_classes.append(feature)
                     self.documents.append(doc_content)
@@ -58,11 +59,12 @@ class NaiveBayesDataCollector():
         print 'filelist:', fileList
         
         print 'done.'
-                
-nb = NaiveBayesDataCollector('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
-
-print
-print 'Keyword List:', nb.keywords
-print 'Target classes:', nb.target_classes
-#for doc in nb.documents:
-#    print doc
+        
+if __name__ == "__main__":        
+    nb = NaiveBayesDataCollector('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
+    
+    print
+    print 'Keyword List:', nb.keywords
+    print 'Target classes:', nb.target_classes
+    #for doc in nb.documents:
+    #    print doc

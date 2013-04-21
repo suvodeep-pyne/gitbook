@@ -5,7 +5,7 @@ Created on Apr 20, 2013
 import re
 
 def tokenize(text):
-    return [tok.strip().lower() for tok in re.compile(r",\s*").split(text)]
+    return [tok.strip() for tok in re.compile(r",\s*").split(text)]
 
 print 'Test code for Multinomial Naive Bayes'
 
