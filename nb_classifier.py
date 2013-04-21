@@ -35,21 +35,20 @@ class NaiveBayesClassifier():
         X_train_counts = self.count_vectorizer.fit_transform(self.documents)
         
 #        print 'Headers:', self.count_vectorizer.get_feature_names()
-        print 'X_train_counts:\n', X_train_counts.toarray()
-        print self.count_vectorizer.vocabulary_.get(u'algorithm')
-        print 'count_vect.vocabulary_:', self.count_vectorizer.vocabulary_
+#        print 'X_train_counts:\n', X_train_counts.toarray()
+#        print 'count_vect.vocabulary_:', self.count_vectorizer.vocabulary_
         
         print 'Performing tf-idf transform..'
         
         X_train_tfidf = self.tfidf_transformer.fit_transform(X_train_counts)
         print 'X_train_tfidf.shape:', X_train_tfidf.shape
-        print 'X_train_tfidf:\n', X_train_tfidf.toarray()
+#        print 'X_train_tfidf:\n', X_train_tfidf.toarray()
         
         self.clf = MultinomialNB().fit(X_train_tfidf, self.target_classes)
         
     def classify(self, docs_new):
         X_new_counts = self.count_vectorizer.transform(docs_new)
-        print 'X_new_counts:', X_new_counts
+#        print 'X_new_counts:', X_new_counts
         X_new_tfidf = self.tfidf_transformer.transform(X_new_counts)
         
         predicted = self.clf.predict(X_new_tfidf)
