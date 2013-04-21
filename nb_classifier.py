@@ -47,8 +47,7 @@ class NaiveBayesClassifier():
         
         self.clf = MultinomialNB().fit(X_train_tfidf, self.target_classes)
         
-    def classify(self):
-        docs_new = ['data mining', 'regression', 'search']
+    def classify(self, docs_new):
         X_new_counts = self.count_vectorizer.transform(docs_new)
         print 'X_new_counts:', X_new_counts
         X_new_tfidf = self.tfidf_transformer.transform(X_new_counts)
@@ -59,16 +58,19 @@ class NaiveBayesClassifier():
         print
         print 'Prediction:'
         for doc, category in zip(docs_new, predicted):
-        #    print '%r => %s' % (doc, twenty_train.target_names[category])
             print '%r => %s' % (doc, category)
         
+        print
         for doc, prob in zip(docs_new, predicted_prob):
             print '%r => %s' % (doc, prob)
+            
+        return predicted_prob
             
 if __name__ == "__main__":        
     nb = NaiveBayesClassifier('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
     nb.train()
-    nb.classify()
+    docs_new = ['data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery']
+    nb.classify(docs_new)
     
     print
     print 'Keyword List:', nb.keywords
