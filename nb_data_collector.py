@@ -59,7 +59,8 @@ class NaiveBayesDataCollector():
     
         print "Total Size is {0} bytes".format(fileSize)
         print 'Total Files: ', len(fileList)
-        print 'filelist:', fileList
+        print 'List of files:'
+        pp.pprint(fileList)
         
         print 'done.'
         
