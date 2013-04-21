@@ -30,9 +30,12 @@ class NaiveBayesDataCollector():
         return words
         
     def process_keywords(self):
+        print 'Processing Keywords..'
         self.keywords.update(self.read_file(self.keywords_path))
+        print 'Done.'
             
     def process_dataset(self):
+        print 'Processing Dataset..'
         fileList = []
         fileSize = 0
     
@@ -43,15 +46,23 @@ class NaiveBayesDataCollector():
                     filepath = os.path.join(root, filename)
                     fileSize += os.path.getsize(filepath)
     
-                    self.documents.append(self.read_file(filepath))
+                    feature = os.path.basename(root)
+                    doc_content = self.read_file(filepath)
+                    
+                    self.target_classes.append(feature)
+                    self.documents.append(doc_content)
                     fileList.append(filepath)
     
         print "Total Size is {0} bytes".format(fileSize)
         print 'Total Files: ', len(fileList)
         print 'filelist:', fileList
+        
+        print 'done.'
                 
 nb = NaiveBayesDataCollector('train_data\\allterms\\allTerms.txt', 'train_data\\dataset')
-print nb.keywords
 
-for doc in nb.documents:
-    print doc
+print
+print 'Keyword List:', nb.keywords
+print 'Target classes:', nb.target_classes
+#for doc in nb.documents:
+#    print doc
