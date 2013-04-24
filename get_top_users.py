@@ -30,14 +30,37 @@ class processUserData():
         self.project_file_count = 1
         self.user_data = []
         self.project_data = []
-        
+
+
+    def read_info_file(self):
+        filename = os.path.join(self.directory, "info")
+        try:
+            file_h = open(filename)
+            data = file_h.read()
+            fields = data.split(" ")
+            self.user_file_count = fields[0]
+            self.project_file_count = fields[1]
+            followers = fields[2]
+            print self.user_file_count, self.project_file_count, followers
+            return followers
+        except IOError:
+            return None
+
+    def dump_all_data(self, followers):
+        self.dump_data(self.user_data, self.current_user_filename)
+        self.dump_data(self.project_data, self.current_project_filename)
+        info_file = os.path.join(self.directory, "info" )
+        fh = open(info_file, "w")
+        fh.write(("" + str(self.user_file_count+1) + " " + str(self.project_file_count+1) + " " + str(followers)))
+        fh.close()
+
 
     def dump_data(self, data, filename):
         filename = os.path.join(self.directory , filename)
         file_handle = open(filename, "wb")
         marshal.dump(data, file_handle)
         file_handle.close()
-        
+
     def parse_repo_data(self, data):
         print "Parsing repo data"
         self.count_project += len(data)
@@ -50,7 +73,7 @@ class processUserData():
             self.current_project_filename = self.project_filename_base + str(self.project_file_count)
             self.project_file_count += 1
             self.count_project = 0
-        
+
     """
     Parses user data and dump the data to a file
     """
@@ -63,7 +86,7 @@ class processUserData():
             users.append(user["login"])
             self.count_users += 1
             follower_count = user["followers_count"]
-        
+
         if self.count_users > self.users_per_file:
             self.dump_data(self.user_data, self.current_user_filename)
             self.user_data = []
@@ -71,7 +94,7 @@ class processUserData():
             self.current_user_filename = self.user_filename_base + str(self.user_file_count)
             self.user_file_count += 1
         return users, follower_count
-        
+
 
 
 class createRequest():
@@ -79,24 +102,24 @@ class createRequest():
         self.user_id = self.git_config_get('user.name')
         self.pwd = self.git_config_get('user.password')
         self.start_page = 1
-        self.parser = processUserData("/home/garima/IR/project/gitbook/data")
+        self.parser = processUserData("/home/garima/IR/gitbook/data")
 
-        if self.user_id == None or self.pwd == None:    
+        if self.user_id == None or self.pwd == None:
             print "Error getting username or password"
             return
 
         self.token = None
         self.users = []
-    
+
     def git_config_get(self, key):
         pipe = Popen(['git', 'config', '--get', key], stdout=PIPE)
         return pipe.communicate()[0].strip()
 
     def auth_curl_cmd(self, url):
         params = ["Authorization: token " + str(self.token)]
-        return self.curl_cmd(url, params) 
+        return self.curl_cmd(url, params)
 
-    def curl_cmd(self, url, header_params = None, post_params=None):     
+    def curl_cmd(self, url, header_params = None, post_params=None):
         while True:
             write_buf = cStringIO.StringIO()
             c = pycurl.Curl()
@@ -106,7 +129,7 @@ class createRequest():
 
             if header_params != None:
                 c.setopt(pycurl.HTTPHEADER, header_params)
-        
+
 
             if post_params != None:
                 c.setopt(pycurl.POSTFIELDS, post_params)
@@ -115,7 +138,7 @@ class createRequest():
             buf = write_buf.getvalue()
             http_code = c.getinfo(pycurl.HTTP_CODE)
             if http_code == 500 or http_code == 501 or http_code == 502 or http_code == 503 or http_code == 504:
-                time.sleep(600)
+                time.sleep(60)
             else:
                 break
 
@@ -126,16 +149,16 @@ class createRequest():
 
         write_buf.close()
         return buf
-            
+
     def get_auth_token(self):
-        auth_url = "https://api.github.com/authorizations" 
+        auth_url = "https://api.github.com/authorizations"
         params = "{\"scopes\":[\"repo\"]}"
         print "Getting auth"
         data = self.curl_cmd(auth_url, None, params)
         print "Got auth"
-        if data == None:    return 
-            
-        self.token = json.loads(data)['token'] 
+        if data == None:    return
+
+        self.token = json.loads(data)['token']
 
     def get_commits(self, data):
         commits = []
@@ -173,39 +196,44 @@ class createRequest():
 
                 commits = self.get_commits(commits)
                 repo['commits'] = commits
-                
+
                 readme_url = "https://api.github.com/repos/" + str(user) + "/" + str(repo['name']) + "/readme"
-                print "readme url is", readme_url    
+                print "readme url is", readme_url
                 readme = self.auth_curl_cmd(readme_url)
                 if readme != None:
                     repo['readme'] = json.loads(readme)
-                else: 
+                else:
                     repo['readme'] = []
                 new_repos.append(repo)
             self.parser.parse_repo_data(new_repos)
 
     def get_top_users_with_followers(self, number_users, follower_count_cap):
+        followers_count = self.parser.read_info_file()
+        if followers_count != None:
+            follower_count_cap = followers_count
         MAX_COUNT = 1000
         user_count = 1
         count = 1
         if self.token == None:
             print "Take authentication token first"
             return
-        while(user_count < number_users):
-            user_url = 'https://api.github.com/legacy/user/search/followers:<' + str(follower_count_cap) + '?sort=followers&start_page=' + str(self.start_page)
-            self.start_page += 1
-            print "Calling api"
-            users = self.auth_curl_cmd(user_url)
-            users, min_follower_count = self.parser.parse_user_data(users)
-            self.users.extend(users)
-            count += len(users)
-            user_count += len(users)
-            self.get_repos(users)
-            if count >= 1000:
-                count = 0
-                follower_count_cap = min_follower_count
-                self.start_page = 1
-        print self.users
+        try:
+            while(user_count < number_users):
+                user_url = 'https://api.github.com/legacy/user/search/followers:<' + str(follower_count_cap) + '?sort=followers&start_page=' + str(self.start_page)
+                self.start_page += 1
+                print "Calling api"
+                users = self.auth_curl_cmd(user_url)
+                users, min_follower_count = self.parser.parse_user_data(users)
+                self.users.extend(users)
+                count += len(users)
+                user_count += len(users)
+                self.get_repos(users)
+                if count >= 1000:
+                    count = 0
+                    follower_count_cap = min_follower_count
+                    self.start_page = 1
+        except:
+            self.parser.dump_all_data(follower_count_cap)
 
 if __name__ == '__main__':
     obj = createRequest()
