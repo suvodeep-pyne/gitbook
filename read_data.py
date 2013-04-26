@@ -12,7 +12,13 @@ import base64
 import fnmatch
 import marshal
 
+"""
+Class which reads data from all the files in a directory and populates the data structure
+"""
 class getData():
+    """
+    init function, takes the directory name which has the data files
+    """
     def __init__(self, directory):
         self.directory = directory
         self.project_data = []
@@ -21,6 +27,7 @@ class getData():
         self.user_followers = {}
 
 
+    """Builds project data structure"""
     def parseProjectData(self):
         for files in os.listdir(self.directory):
             if not fnmatch.fnmatch(files, "project[0-9]*"):
@@ -36,6 +43,7 @@ class getData():
                 self.project_data.append(project)
         return self.project_data
         
+    """Builds user data structure"""
     def parseUserData(self): 
         for files in os.listdir(self.directory):
             if not fnmatch.fnmatch(files, "user[0-9]*"):
@@ -48,6 +56,7 @@ class getData():
                 self.user_followers[user["username"]] = user["followers"]
             fh.close()
 
+    """Builds the followers data structures"""
     def parseUserFollowers(self):
         self.parseUserData()
         for files in os.listdir(self.directory):
