@@ -16,7 +16,7 @@ from subprocess import Popen, PIPE
 
 pp = pprint.PrettyPrinter(depth = 6)
 
-class processUserData():
+class ProcessUserData():
     def __init__(self, directory, user_filename="user", project_filename="project", users_per_file=1000):
         self.user_filename_base = user_filename
         self.project_filename_base = project_filename
@@ -97,12 +97,13 @@ class processUserData():
 
 
 
-class createRequest():
+class CreateRequest():
     def __init__(self):
         self.user_id = self.git_config_get('user.name')
         self.pwd = self.git_config_get('user.password')
         self.start_page = 1
-        self.parser = processUserData("/home/garima/IR/gitbook/data")
+        self.parser = ProcessUserData("user")
+        self.user_follower_map = {}
 
         if self.user_id == None or self.pwd == None:
             print "Error getting username or password"
@@ -168,6 +169,19 @@ class createRequest():
             commits.append(cm)
         return commits
 
+    def get_followers(self, users):
+        for user in users:
+            followers_url = "https://api.github.com/users/" + str(user) + "/followers"
+            params = ["Authorization: token " + str(self.token)]
+            followers = self.curl_cmd(followers_url, params)
+            if followers == None:
+                continue
+            followers = json.loads(followers)
+            followers_list = []
+            for follower in followers:
+                followers_list.append(follower["login"])
+            self.user_follower_map[user] = followers_list
+    
     def get_repos(self, users):
         repo_base_url = "https://api.github.com/users/"
         repos = []
@@ -207,7 +221,7 @@ class createRequest():
                 new_repos.append(repo)
             self.parser.parse_repo_data(new_repos)
 
-    def get_top_users_with_followers(self, number_users, follower_count_cap):
+    def get_top_users_with_followers(self, number_users, follower_count_cap, get_followers = False):
         followers_count = self.parser.read_info_file()
         if followers_count != None:
             follower_count_cap = followers_count
@@ -227,15 +241,24 @@ class createRequest():
                 self.users.extend(users)
                 count += len(users)
                 user_count += len(users)
-                self.get_repos(users)
+                if get_followers:
+                    self.get_followers(users)
+                    self.parser.dump_data(self.user_follower_map, "user_follower_map")
+                else:
+                    self.get_repos(users)
                 if count >= 1000:
                     count = 0
                     follower_count_cap = min_follower_count
                     self.start_page = 1
         except:
             self.parser.dump_all_data(follower_count_cap)
+            self.parser.dump_data(self.user_follower_map, "user_follower_map")
 
 if __name__ == '__main__':
-    obj = createRequest()
+    obj = CreateRequest()
     obj.get_auth_token()
-    obj.get_top_users_with_followers(6000, 20000)
+    if len(sys.argv) > 1:
+        print "Getting followers"
+        obj.get_top_users_with_followers(60000, 20000, True)
+    else:
+        obj.get_top_users_with_followers(6000, 20000)
