@@ -3,6 +3,7 @@ Collects all the Lines of code [LOC] and dumps it in file as
 
 {project ID: {lang: LOC} }
 
+Author : Ashwath Rajendran
 """
 import os
 import sys
@@ -22,7 +23,9 @@ pp = pprint.PrettyPrinter(depth = 4)
 
 class getLOC():
   def getAllLOCandDump(self):
-    fw = open('LOC.txt','w')
+    #fw = open('LOC.txt','w')
+    obj = createRequest()
+    obj.get_auth_token()
     projectLOC = defaultdict()
     prevTime = time.time()
     numReq = 0
@@ -31,50 +34,44 @@ class getLOC():
     for project in projectList:
       URL = project[u'languages_url']
       projectFullName = project[u'full_name']
-     
+      """
       numReq +=1
       now = time.time()
-     
       if numReq >= 5000 and  now - prevTime >= 3600:
         print "exceeding limit... sleeping- prev: " , prevTime , " curr: ", now
         time.sleep(1)
         prevTime = time.time()
         numReq = 0
-     
-      try:
-        r = requests.get(URL)
-     
-        if r.status_code == 503 or r.status_code == 502 or r.status_code == 500 or r.status_code == 406 or r.status_code == 405 or r.status_code == 404 or r.status_code == 403 or r.status_code == 402 or r.status_code == 401 or r.status_code == 400:
-          print "status_code : " ,r.status_code, " sleepin..."
-          time.sleep(2)
-        else: 
-          language_loc=json.loads(r.text)
-          projectLOC[projectFullName] = language_loc
-          #pp.pprint(projectLOC)
-          """
-          languages = defaultdict()
-          for lang in language_loc:
-            languages[lang] = language_loc[lang]
-          """
-          #  fw.write(tag['name'])
-          #  fw.write(' ')
-      
+      """
+      #try:
+      r = obj.auth_curl_cmd(str(URL))
+      language_loc=json.loads(r)
+      projectLOC[projectFullName] = language_loc
+      pp.pprint(projectLOC)
+      """
+      languages = defaultdict()
+      for lang in language_loc:
+        languages[lang] = language_loc[lang]
+      """
+      #  fw.write(tag['name'])
+      #  fw.write(' ')
+      """
       except:
         print "connection error: sleeping for 1 sec"
         time.sleep(1)
-     
-    fw.close()
+     """
    
    
    
    
    
+from subprocess import Popen, PIPE
 class createRequest():
    def __init__(self):
        self.user_id = self.git_config_get('user.name')
        self.pwd = self.git_config_get('user.password')
        self.start_page = 1
-       self.parser = processUserData("/home/garima/IR/gitbook/data")
+       #self.parser = processUserData("/home/ash/code/IR/gitbook/github_data")
 
        if self.user_id == None or self.pwd == None:
            print "Error getting username or password"
@@ -208,6 +205,8 @@ class createRequest():
            self.parser.dump_all_data(follower_count_cap)
 
 if __name__ == '__main__':
-    obj = createRequest()
-    obj.get_auth_token()
+    #obj = createRequest()
+    #obj.get_auth_token()
     #obj.get_top_users_with_followers(6000, 20000)  
+    locObj = getLOC()
+    locObj.getAllLOCandDump()
