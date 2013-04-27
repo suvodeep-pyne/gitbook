@@ -1,3 +1,6 @@
+"""
+Collects all the Stack overflow tags and forms a vocabulary
+"""
 import os
 import sys
 import json
