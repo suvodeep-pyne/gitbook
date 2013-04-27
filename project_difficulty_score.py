@@ -1,24 +1,71 @@
 """
 calculates the project's difficulty score based on the number of lines of code 
+Author : Ashwath Rajendran
 """
-import pprint 
-import time
-import requests
-from read_data import *
+import os
+import sys
 import json
-projectDataObject = getData('./github_data')
-projectList = projectDataObject.parseProjectData()
-for project in projectList:
-  pp = pprint.PrettyPrinter(indent=4)
-  URL = project[u'languages_url']
-  projectFullName = project[u'full_name']
-  r = requests.get(URL)
-  
-  if r.status_code == 503 or r.status_code == 502 or r.status_code == 500 or r.status_code == 406 or r.status_code == 405 or r.status_code == 404 or r.status_code == 403 or r.status_code == 402 or r.status_code == 401 or r.status_code == 400:
-        print "status_code : " ,r.status_code, " ERROR!!"
-  else: 
-    language_loc=json.loads(r.text)
-    for lang in language_loc:
-      print lang, " has " , language_loc[lang], "lines of code"
+import time
+import pprint
+import requests
+from collections import defaultdict
+from read_data import *
+import curl
+import pycurl
+import urllib
+import marshal
+import pickle
+import cStringIO
 
+pp = pprint.PrettyPrinter(depth = 4)
+
+class ProjectDifficultyCalculator():
+  """
+  takes in the {project ID: {lang1: LOC, lang2:LOC} } data structure and assigns a project difficulty score for each language to the project.
+  If a project has multiple languages, then a cumulative difficult will be assigned as the overall difficulty of the project
+
+  """
+  def readDataAndDump(self):
+    pp = pprint.PrettyPrinter(depth = 4)
+    allProjects = defaultdict()
+    with open('LOC.txt','rb') as f:
+      print "loading the dict from pickle file.. please wait.. "
+      while 1:
+        try:
+          allProjects.update(pickle.load(f))
+        except EOFError:
+          print 'parsing done!'
+          break # no more data in the file
+    #pp.pprint(projectDataObject)
+    print 'there are ',len(allProjects), 'projects in total in the pickle file'
+
+    allProjLang = defaultdict()   #just stores the sum of squares of all LOC for normalising
+    difficultyScore = defaultdict() # the final that stores { project: score }  final DS to dump with pickle
+
+    for proj in allProjects:
+      languages = allProjects[proj]
+      for lang in languages:
+        if lang in allProjLang:
+          allProjLang += languages[lang]*languages[lang]
+        else:
+          allProjLang = languages[lang]*languages[lang]
+    # substitute the LOC to a normalized LOC
+    for proj in allProjects:
+      languages = allProjects[proj]
+      for lang in languages:
+        languages[lang] = float(languages[lang]/float(allProjLang[lang]))
+    # scale it all from 0 to 1 --> 1 is the max project's score. divide every lang's score by that max score
+
+        
+
+
+
+
+
+if __name__ == '__main__':
+    #obj = createRequest()
+    #obj.get_auth_token()
+    #obj.get_top_users_with_followers(6000, 20000)  
+    locObj =ProjectDifficultyCalculator()
+    locObj.readDataAndDump()
 
