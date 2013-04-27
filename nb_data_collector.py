@@ -53,6 +53,8 @@ class NaiveBayesDataCollector():
                     feature = os.path.basename(root)
                     doc_content = open(filepath, 'r').read().lower()
                     
+                    doc_content = unicode(doc_content, 'utf-8', errors = 'ignore')
+                    
                     self.target_classes.append(feature)
                     self.documents.append(doc_content)
                     fileList.append(filepath)

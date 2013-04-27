@@ -42,10 +42,10 @@ class NaiveBayesClassifier():
         print 'Performing tf-idf transform..'
         
         X_train_tfidf = self.tfidf_transformer.fit_transform(X_train_counts)
-        print 'X_train_tfidf.shape:', X_train_tfidf.shape
+        #print 'X_train_tfidf.shape:', X_train_tfidf.shape
 #        print 'X_train_tfidf:\n', X_train_tfidf.toarray()
         
-        self.clf = MultinomialNB().fit(X_train_tfidf, self.target_classes)
+        self.clf = MultinomialNB(fit_prior=False).fit(X_train_tfidf, self.target_classes)
         
     def classify(self, param):
         if isinstance(param, list):
@@ -59,14 +59,14 @@ class NaiveBayesClassifier():
         predicted = self.clf.predict(X_new_tfidf)
         predicted_prob = self.clf.predict_proba(X_new_tfidf)
         
-#        print
-#        print 'Prediction:'
-#        for doc, category in zip(docs_new, predicted):
-#            print '%r => %s' % (doc, category)
-#        
-#        print
-#        for doc, prob in zip(docs_new, predicted_prob):
-#            print '%r => %s' % (doc, prob)
+        print
+        print 'Prediction:'
+        for doc, category in zip(docs_new, predicted):
+            print '%r => %s' % (doc, category)
+        
+        print
+        for doc, prob in zip(docs_new, predicted_prob):
+            print '%r => %s' % (doc, prob)
         
         return_val = []
         for row in predicted_prob:
@@ -79,7 +79,7 @@ class NaiveBayesClassifier():
 if __name__ == "__main__":        
     nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
     nb.train()
-    docs_new = ['data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery']
+    docs_new = ['asdfasdfasdf', 'jquery', 'data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery', 'Kernel']
     result = nb.classify(docs_new)
     
     pp.pprint(result)
