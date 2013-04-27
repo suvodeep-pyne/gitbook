@@ -4,6 +4,7 @@ Created on Apr 26, 2013
 @author: Suvodeep Pyne
 '''
 
+import operator
 import pprint as pp
 
 from read_data import DataRetriever
@@ -35,7 +36,10 @@ class Recommender():
             # Bad case: When readme is not found. It returns empty lists.
             if isinstance(readme, list): continue
             readme = unicode(readme, 'utf-8', errors = 'ignore')
-            self.projects[name]['class_prob'] = self.nb.classify(readme)
+            prob_data = self.nb.classify(readme)[0]
+            self.projects[name]['class_prob'] = prob_data
+            if len(prob_data) > 0:
+                self.projects[name]['category'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[0]
             
             
 if __name__ == '__main__':
