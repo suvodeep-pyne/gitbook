@@ -11,17 +11,19 @@ import sys
 import base64
 import fnmatch
 import marshal
+import pprint as pp
+
 
 """
 Class which reads data from all the files in a directory and populates the data structure
 """
-class getData():
+class DataRetriever():
     """
     init function, takes the directory name which has the data files
     """
     def __init__(self, directory):
         self.directory = directory
-        self.project_data = []
+        self.project_data = {}
         self.user_data = []
         self.user_dict = {}
         self.user_followers = {}
@@ -40,7 +42,7 @@ class getData():
                 if readme_dict != []:
                     readme = readme_dict["content"]
                     project["readme"] = base64.b64decode(readme) 
-                self.project_data.append(project)
+                self.project_data[project[u'full_name']] = project
         return self.project_data
         
     """Builds user data structure"""
@@ -70,5 +72,6 @@ class getData():
     
 if __name__ == '__main__':
     dirname = sys.argv[1]
-    obj = getData(dirname)
+    obj = DataRetriever(dirname)
     project = obj.parseProjectData()
+    pp.pprint(project)

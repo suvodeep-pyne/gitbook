@@ -5,6 +5,7 @@ Created on Apr 20, 2013
 '''
 
 import re
+import pprint as pp
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -69,7 +70,9 @@ if __name__ == "__main__":
     nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
     nb.train()
     docs_new = ['data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery']
-    nb.classify(docs_new)
+    result = nb.classify(docs_new)
+    
+    pp.pprint(result)
     
     print
     print 'Target classes:', nb.target_classes
