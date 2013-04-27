@@ -41,7 +41,6 @@ def build_pr_graph(user_graph):
                 if out_user not in pr_graph: pr_graph[out_user] = set()
                 unique_user.add(out_user)
                 pr_graph[out_user].add(user)
-    pp.pprint(pr_graph)
 
 def compute(user_graph):
     print 'Computing pagerank on users...'
@@ -64,8 +63,6 @@ def compute(user_graph):
         total_pr = 0 # required for normalization
         for user in pr_graph:
             inlink_sum = 0
-            if user == 'torvalds':
-                print pr_graph[user]
             for in_user in pr_graph[user]:
                 inlink_sum += pr[in_user] / len(user_graph[in_user])
             new_pr[user] = ALPHA * inlink_sum + tlprt_val
@@ -105,7 +102,13 @@ def pagerank():
     
     # sort on descending score
     ranked_users = sorted(pr.iteritems(), key=operator.itemgetter(1), reverse=True)
-    print ranked_users[:30]
+    
+    name, scale_value = ranked_users[0]
+    ranked_users[0] = (name, 1)
+    users_ranking = map(lambda x: (x[0], x[1] / scale_value), ranked_users[1:])
+    users_ranking = [ranked_users[0]] + users_ranking
+    #normalize the scores
+    print users_ranking[:30]
     t1 = time.clock()
    
     """ 
