@@ -45,16 +45,50 @@ class ProjectDifficultyCalculator():
     for proj in allProjects:
       languages = allProjects[proj]
       for lang in languages:
+        #print lang
         if lang in allProjLang:
-          allProjLang += languages[lang]*languages[lang]
+          allProjLang[lang] += float(languages[lang]*languages[lang])
         else:
-          allProjLang = languages[lang]*languages[lang]
+          allProjLang[lang] = float(languages[lang]*languages[lang])
     # substitute the LOC to a normalized LOC
     for proj in allProjects:
       languages = allProjects[proj]
       for lang in languages:
         languages[lang] = float(languages[lang]/float(allProjLang[lang]))
     # scale it all from 0 to 1 --> 1 is the max project's score. divide every lang's score by that max score
+    maxScore = defaultdict()
+    for lang in allProjLang:
+      maxScore[lang] = float(0.0)
+    # find max scores for each language
+    for proj in allProjects:
+      languages = allProjects[proj]
+      for lang in languages:
+        maxScore[lang] = max(maxScore[lang] , languages[lang] )
+    # divide each value by the maximum value
+    for proj in allProjects:
+      languages = allProjects[proj]
+      for lang in languages:
+        languages[lang] = float(languages[lang]/maxScore[lang])
+    # DONE!!! all scores in langiages is a score from 0 to 1
+    for proj in allProjects:
+      languages = allProjects[proj]
+      difficultyScore[proj] = 0
+      for lang in languages:
+        difficultyScore[proj] = max(languages[lang], difficultyScore[proj])
+    pp.pprint(difficultyScore)
+    with open('difficulty_score.p','wb') as f:
+      pickle.dump(difficultyScore,f)
+    print "pickle has dumped all difficulty scores in difficulty_score.p file.. unpickle and integrate"
+
+
+
+
+
+
+
+
+
+
 
         
 
