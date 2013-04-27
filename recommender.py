@@ -24,7 +24,7 @@ class Recommender():
         self.nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
         self.nb.train()
     
-    def get_recommended_projects(self, preferences):
+    def get_recommended_projects(self, pref):
         pass
     
     def build_projects_vector(self):
@@ -34,11 +34,8 @@ class Recommender():
             
             # Bad case: When readme is not found. It returns empty lists.
             if isinstance(readme, list): continue
-            try:
-                readme = readme.encode('utf8', 'ignore')
-                self.projects[name]['class_prob'] = self.nb.classify(readme)
-            except:
-                pass
+            readme = unicode(readme, 'utf-8', errors = 'ignore')
+            self.projects[name]['class_prob'] = self.nb.classify(readme)
             
             
 if __name__ == '__main__':
