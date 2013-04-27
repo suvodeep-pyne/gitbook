@@ -1,7 +1,7 @@
 """
 Collects all the Lines of code [LOC] and dumps it in file as 
 
-{project ID: {lang: LOC} }
+{project ID: {lang1: LOC, lang2:LOC} }
 
 Author : Ashwath Rajendran
 """
@@ -17,52 +17,38 @@ import curl
 import pycurl
 import urllib
 import marshal
+import pickle
 import cStringIO
 
 pp = pprint.PrettyPrinter(depth = 4)
 
 class getLOC():
   def getAllLOCandDump(self):
-    #fw = open('LOC.txt','w')
+    fw = open('LOC.txt','ab')
+    
     obj = createRequest()
     obj.get_auth_token()
     projectLOC = defaultdict()
     prevTime = time.time()
     numReq = 0
-    projectDataObject = getData('./github_data')
+    projectDataObject = DataRetriever('./github_data')
     projectList = projectDataObject.parseProjectData()
-    for project in projectList:
+    print "there are ", len(projectList) , " projects"
+    cnt=0
+    for proj in projectList:
+      project = projectList[proj]
+      cnt+=1
       URL = project[u'languages_url']
       projectFullName = project[u'full_name']
-      """
-      numReq +=1
-      now = time.time()
-      if numReq >= 5000 and  now - prevTime >= 3600:
-        print "exceeding limit... sleeping- prev: " , prevTime , " curr: ", now
-        time.sleep(1)
-        prevTime = time.time()
-        numReq = 0
-      """
-      #try:
       r = obj.auth_curl_cmd(str(URL))
+      if r == None:
+        continue
       language_loc=json.loads(r)
       projectLOC[projectFullName] = language_loc
-      pp.pprint(projectLOC)
-      """
-      languages = defaultdict()
-      for lang in language_loc:
-        languages[lang] = language_loc[lang]
-      """
-      #  fw.write(tag['name'])
-      #  fw.write(' ')
-      """
-      except:
-        print "connection error: sleeping for 1 sec"
-        time.sleep(1)
-     """
-   
-   
-   
+      print('processing project number: '+str(cnt))
+      pickle.dump(projectLOC, fw)
+      #pp.pprint(projectLOC)
+    fw.close()
    
    
 from subprocess import Popen, PIPE
@@ -107,6 +93,7 @@ class createRequest():
            buf = write_buf.getvalue()
            http_code = c.getinfo(pycurl.HTTP_CODE)
            if http_code == 500 or http_code == 501 or http_code == 502 or http_code == 503 or http_code == 504:
+                
                time.sleep(60)
            else:
                break
