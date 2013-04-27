@@ -30,9 +30,13 @@ class ProjectDifficultyCalculator():
     allProjects = defaultdict()
     with open('LOC.txt','rb') as f:
       print "loading the dict from pickle file.. please wait.. "
+      cnt =0
       while 1:
         try:
           allProjects.update(pickle.load(f))
+          cnt+=1
+          #if cnt>10:
+          #  break
         except EOFError:
           print 'parsing done!'
           break # no more data in the file
@@ -41,15 +45,22 @@ class ProjectDifficultyCalculator():
 
     allProjLang = defaultdict()   #just stores the sum of squares of all LOC for normalising
     difficultyScore = defaultdict() # the final that stores { project: score }  final DS to dump with pickle
-
+    langToprojs = defaultdict(set)
     for proj in allProjects:
+      #print proj
       languages = allProjects[proj]
       for lang in languages:
         #print lang
+        langToprojs[lang].add(proj)
         if lang in allProjLang:
           allProjLang[lang] += float(languages[lang]*languages[lang])
         else:
           allProjLang[lang] = float(languages[lang]*languages[lang])
+    #pp.pprint(langToprojs)
+    with open('lang_to_projects.p','wb') as f:
+      pickle.dump(langToprojs,f)
+    print "pickle has dumped all lang to proj lists in lang_to_projects.p file.. unpickle and integrate"
+
     # substitute the LOC to a normalized LOC
     for proj in allProjects:
       languages = allProjects[proj]
@@ -75,13 +86,13 @@ class ProjectDifficultyCalculator():
       difficultyScore[proj] = 0
       for lang in languages:
         difficultyScore[proj] = max(languages[lang], difficultyScore[proj])
-    pp.pprint(difficultyScore)
+    #pp.pprint(difficultyScore)
+    """
     with open('difficulty_score.p','wb') as f:
       pickle.dump(difficultyScore,f)
     print "pickle has dumped all difficulty scores in difficulty_score.p file.. unpickle and integrate"
-
-
-
+    """
+    
 
 
 
