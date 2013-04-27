@@ -30,7 +30,15 @@ class Recommender():
     def build_projects_vector(self):
         for name, project in self.project_data.iteritems():
             self.projects[name] = {}
-            self.projects[name]['class_prob'] = self.nb.classify(project['readme'])
+            readme = project['readme']
+            
+            # Bad case: When readme is not found. It returns empty lists.
+            if isinstance(readme, list): continue
+            try:
+                readme = readme.encode('utf8', 'ignore')
+                self.projects[name]['class_prob'] = self.nb.classify(readme)
+            except:
+                pass
             
             
 if __name__ == '__main__':
@@ -39,5 +47,7 @@ if __name__ == '__main__':
     print obj.get_recommended_projects(5)
     
     print 'Printing projects Data Structure'
-    pp.pprint(obj.projects[:5])
+    pp.pprint(obj.projects)
+    print 'Size of Project_data:', len(obj.project_data)
+    print 'Size of projects:', len(obj.projects)
     
