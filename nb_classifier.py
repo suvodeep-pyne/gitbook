@@ -42,7 +42,7 @@ class NaiveBayesClassifier():
         print 'Performing tf-idf transform..'
         
         X_train_tfidf = self.tfidf_transformer.fit_transform(X_train_counts)
-        print 'X_train_tfidf.shape:', X_train_tfidf.shape
+        #print 'X_train_tfidf.shape:', X_train_tfidf.shape
 #        print 'X_train_tfidf:\n', X_train_tfidf.toarray()
         
         self.clf = MultinomialNB().fit(X_train_tfidf, self.target_classes)
