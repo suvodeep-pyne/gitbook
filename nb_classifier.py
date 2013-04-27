@@ -47,7 +47,11 @@ class NaiveBayesClassifier():
         
         self.clf = MultinomialNB().fit(X_train_tfidf, self.target_classes)
         
-    def classify(self, docs_new):
+    def classify(self, param):
+        if isinstance(param, list):
+            docs_new = param
+        else:
+            docs_new = [param]
         X_new_counts = self.count_vectorizer.transform(docs_new)
 #        print 'X_new_counts:', X_new_counts
         X_new_tfidf = self.tfidf_transformer.transform(X_new_counts)
@@ -55,16 +59,22 @@ class NaiveBayesClassifier():
         predicted = self.clf.predict(X_new_tfidf)
         predicted_prob = self.clf.predict_proba(X_new_tfidf)
         
-        print
-        print 'Prediction:'
-        for doc, category in zip(docs_new, predicted):
-            print '%r => %s' % (doc, category)
+#        print
+#        print 'Prediction:'
+#        for doc, category in zip(docs_new, predicted):
+#            print '%r => %s' % (doc, category)
+#        
+#        print
+#        for doc, prob in zip(docs_new, predicted_prob):
+#            print '%r => %s' % (doc, prob)
         
-        print
-        for doc, prob in zip(docs_new, predicted_prob):
-            print '%r => %s' % (doc, prob)
-            
-        return predicted_prob
+        return_val = []
+        for row in predicted_prob:
+            prob_data = {}
+            for prob, category in zip(row, self.target_classes):
+                prob_data[category] = prob
+            return_val.append(prob_data)
+        return return_val
             
 if __name__ == "__main__":        
     nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
