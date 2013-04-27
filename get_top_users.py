@@ -13,7 +13,7 @@ import marshal
 import cStringIO
 
 from subprocess import Popen, PIPE
-
+DIR = "user"
 pp = pprint.PrettyPrinter(depth = 6)
 
 class ProcessUserData():
@@ -102,7 +102,7 @@ class CreateRequest():
         self.user_id = self.git_config_get('user.name')
         self.pwd = self.git_config_get('user.password')
         self.start_page = 1
-        self.parser = ProcessUserData("user")
+        self.parser = ProcessUserData(DIR)
         self.user_follower_map = {}
 
         if self.user_id == None or self.pwd == None:
@@ -138,7 +138,7 @@ class CreateRequest():
             c.perform()
             buf = write_buf.getvalue()
             http_code = c.getinfo(pycurl.HTTP_CODE)
-            if http_code == 500 or http_code == 501 or http_code == 502 or http_code == 503 or http_code == 504:
+            if http_code == 500 or http_code == 501 or http_code == 502 or http_code == 503 or http_code == 504 or http_code == 403 or http_code == 422:
                 time.sleep(60)
             else:
                 break
