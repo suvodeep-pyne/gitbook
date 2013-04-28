@@ -7,6 +7,7 @@ Edited by Garima Agarwal
 
 import operator
 import pprint as pp
+import pickle
 
 from read_data import DataRetriever
 from nb_classifier import NaiveBayesClassifier
@@ -62,7 +63,7 @@ class Recommender():
     """Get different scores for each project"""
     def build_project_features(self):
         self.project_vector = self.project_vector_builder.build_projects_vector()
-        self.user_ranking = pagerank(self.user_data, self.user_follower_map)
+        #self.user_ranking = pagerank(self.user_data, self.user_follower_map)
         with open('new_LOC.p','rb') as f:
           self.difficulty_score = pickle.load(f)
                  
@@ -74,7 +75,7 @@ if __name__ == '__main__':
     print 'Printing projects Data Structure'
     #pp.pprint(obj.projects)
     print 'Size of Project_data:', len(obj.project_data)
-    print 'Size of projects:', len(obj.projects)
+    #print 'Size of projects:', len(obj.projects)
     #pp.pprint(obj.project_vector)
     #pp.pprint(obj.user_ranking[0:10])
     
