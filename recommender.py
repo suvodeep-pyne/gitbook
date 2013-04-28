@@ -22,7 +22,7 @@ class Recommender():
         self.project_data = self.data_retriever.parseProjectData()
         self.user_data = self.data_retriever.parseUserData()
         
-        self.nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
+        self.nb = NaiveBayesClassifier('train_data/vocabulary', 'train_data/dataset')
         self.nb.train()
     
     def get_recommended_projects(self, pref):
