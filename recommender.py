@@ -46,7 +46,7 @@ class ProjectVectorBuilder():
             if len(prob_data) > 0:
                 self.projects[name]['category'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[0]
         print "Printing maps"
-        pp.pprint(self.projects)
+        #pp.pprint(self.projects)
         return self.projects
     
             
@@ -62,7 +62,9 @@ class Recommender():
     """Get different scores for each project"""
     def build_project_features(self):
         self.project_vector = self.project_vector_builder.build_projects_vector()
-        self.user_ranking = pagerank(self.user_data, self.user_follower_map) 
+        self.user_ranking = pagerank(self.user_data, self.user_follower_map)
+        with open('new_LOC.p','rb') as f:
+          self.difficulty_score = pickle.load(f)
                  
 
 if __name__ == '__main__':
@@ -70,12 +72,9 @@ if __name__ == '__main__':
     obj.build_project_features()
     
     print 'Printing projects Data Structure'
-<<<<<<< HEAD
-    pp.pprint(obj.projects)
+    #pp.pprint(obj.projects)
     print 'Size of Project_data:', len(obj.project_data)
     print 'Size of projects:', len(obj.projects)
-=======
     #pp.pprint(obj.project_vector)
     #pp.pprint(obj.user_ranking[0:10])
->>>>>>> adebeafde62a0491cd5940bdd7d07945dc57b941
     
