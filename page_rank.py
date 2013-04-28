@@ -84,7 +84,7 @@ def compute(user_graph):
             break
         iter_count += 1
 
-def pagerank():
+def pagerank(user, u_f_m):
     """
     if len(user_graph) == 0:
         sys.stderr.write('Error: No user graph created.\n')
@@ -93,8 +93,8 @@ def pagerank():
     """
     t0 = time.clock()
     
-    obj = getData("github_data/")
-    user_map, user_followers = obj.parseUserFollowers()
+    user_map = user
+    user_followers = u_f_m
     compute(user_map)
         
     # transfer your data into a more usable format
