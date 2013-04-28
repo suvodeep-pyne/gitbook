@@ -6,6 +6,7 @@ Edited by Garima Agarwal
 '''
 
 import operator
+import pickle
 import pprint as pp
 import pickle
 
@@ -46,8 +47,6 @@ class ProjectVectorBuilder():
             self.projects[name]['description'] = readme
             if len(prob_data) > 0:
                 self.projects[name]['category'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[0]
-        print "Printing maps"
-        #pp.pprint(self.projects)
         return self.projects
     
             
@@ -63,19 +62,31 @@ class Recommender():
     """Get different scores for each project"""
     def build_project_features(self):
         self.project_vector = self.project_vector_builder.build_projects_vector()
-        #self.user_ranking = pagerank(self.user_data, self.user_follower_map)
+        self.user_ranking = pagerank(self.user_data, self.user_follower_map)
+        with open('lang_to_projects.p') as f:
+          self.language_proj = pickle.load(f)
+            
         with open('new_LOC.p','rb') as f:
           self.difficulty_score = pickle.load(f)
                  
+    def recommend_projects(self, languages, area_interest, difficulty): 
+        projects = set()
+        for language in languages:
+            projects = projects.union(self.language_proj[language]) 
+        
+        similar_projects = []
+        for project in projects:
+            similar_projects.append(self.project_vector[project])
+            
+        pp.pprint(similar_projects)
+
 
 if __name__ == '__main__':
     obj = Recommender()
     obj.build_project_features()
-    
+    obj.recommend_projects(['JavaScript'], ['Web'], ['Hard'])
     print 'Printing projects Data Structure'
     #pp.pprint(obj.projects)
-    print 'Size of Project_data:', len(obj.project_data)
-    #print 'Size of projects:', len(obj.projects)
     #pp.pprint(obj.project_vector)
     #pp.pprint(obj.user_ranking[0:10])
     
