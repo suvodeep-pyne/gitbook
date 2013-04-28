@@ -36,8 +36,8 @@ class getLOC():
     print "there are ", len(projectList) , " projects"
     cnt=0
     for proj in projectList:
-      #pp.pprint(projectList[proj])
-      #break
+      pp.pprint(projectList[proj][u'owner'][u'organizations_url'])
+      break
       project = projectList[proj]
       cnt+=1
       URL = project[u'languages_url']

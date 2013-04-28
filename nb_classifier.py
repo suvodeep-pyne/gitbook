@@ -18,7 +18,7 @@ def tokenize(text):
     return re.findall(tokenizer_regex, text)
 
 class NaiveBayesClassifier():
-    tfidf_transformer = TfidfTransformer()
+    tfidf_transformer = TfidfTransformer(norm = 'l2')
     
     def __init__(self, keywords_path, dataset_path):
         self.data_collector = NaiveBayesDataCollector(keywords_path, dataset_path)
@@ -77,7 +77,7 @@ class NaiveBayesClassifier():
         return return_val
             
 if __name__ == "__main__":        
-    nb = NaiveBayesClassifier('train_data\\vocabulary', 'train_data\\dataset')
+    nb = NaiveBayesClassifier('train_data/vocabulary', 'train_data/dataset')
     nb.train()
     docs_new = ['asdfasdfasdf', 'jquery', 'data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery', 'Kernel']
     result = nb.classify(docs_new)

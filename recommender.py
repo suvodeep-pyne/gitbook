@@ -70,6 +70,12 @@ if __name__ == '__main__':
     obj.build_project_features()
     
     print 'Printing projects Data Structure'
+<<<<<<< HEAD
+    pp.pprint(obj.projects)
+    print 'Size of Project_data:', len(obj.project_data)
+    print 'Size of projects:', len(obj.projects)
+=======
     #pp.pprint(obj.project_vector)
     #pp.pprint(obj.user_ranking[0:10])
+>>>>>>> adebeafde62a0491cd5940bdd7d07945dc57b941
     
