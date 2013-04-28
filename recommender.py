@@ -10,9 +10,10 @@ import pickle
 import pprint as pp
 import pickle
 
+from page_rank import pagerank
+from collections import defaultdict
 from read_data import DataRetriever
 from nb_classifier import NaiveBayesClassifier
-from page_rank import pagerank
 
 GITHUB_DATA = 'github_data'
 TRAIN_DATA = 'train_data'
@@ -58,14 +59,26 @@ class Recommender():
         self.project_data = self.data_retriever.parseProjectData()
         self.user_data, self.user_follower_map = self.data_retriever.parseUserFollowers()
         self.project_vector_builder = ProjectVectorBuilder(self.project_data)
-   
+        self.language_proj = defaultdict()   
+
+    def get_languages(self):
+        lang_dict = {}
+        
+        for lang in language_proj.keys():
+            _lang = lang.replace(' ','$')
+            lang_dict[_lang] = lang
+        return lang_dict        
+
+    def get_aoi(self):
+        return self.project_vector_builder.nb.clf.classes_
+    
     """Get different scores for each project"""
     def build_project_features(self):
         self.project_vector = self.project_vector_builder.build_projects_vector()
         self.user_ranking = pagerank(self.user_data, self.user_follower_map)
         with open('lang_to_projects.p') as f:
           self.language_proj = pickle.load(f)
-            
+        
         with open('new_LOC.p','rb') as f:
           self.difficulty_score = pickle.load(f)
                  
@@ -76,7 +89,8 @@ class Recommender():
         
         similar_projects = []
         for project in projects:
-            similar_projects.append(self.project_vector[project])
+            if self.project_vector[project]['category'] in area_interest:
+                similar_projects.append(self.project_vector[project])
             
         pp.pprint(similar_projects)
 
@@ -84,7 +98,9 @@ class Recommender():
 if __name__ == '__main__':
     obj = Recommender()
     obj.build_project_features()
-    obj.recommend_projects(['JavaScript'], ['Web'], ['Hard'])
+    print obj.get_languages()
+    print obj.get_aoi()
+    #obj.recommend_projects(['JavaScript'], ['Web'], ['Hard'])
     print 'Printing projects Data Structure'
     #pp.pprint(obj.projects)
     #pp.pprint(obj.project_vector)
