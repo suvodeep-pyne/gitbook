@@ -2,6 +2,7 @@
 Created on Apr 20, 2013
 
 @author: Suvodeep Pyne
+Edited: Garima Agarwal
 '''
 
 import re
@@ -18,7 +19,7 @@ def tokenize(text):
     return re.findall(tokenizer_regex, text)
 
 class NaiveBayesClassifier():
-    tfidf_transformer = TfidfTransformer(norm = 'l2')
+    tfidf_transformer = TfidfTransformer(norm = None)
     
     def __init__(self, keywords_path, dataset_path):
         self.data_collector = NaiveBayesDataCollector(keywords_path, dataset_path)
@@ -59,6 +60,7 @@ class NaiveBayesClassifier():
         predicted = self.clf.predict(X_new_tfidf)
         predicted_prob = self.clf.predict_proba(X_new_tfidf)
         
+        """
         print
         print 'Prediction:'
         for doc, category in zip(docs_new, predicted):
@@ -67,19 +69,20 @@ class NaiveBayesClassifier():
         print
         for doc, prob in zip(docs_new, predicted_prob):
             print '%r => %s' % (doc, prob)
-        
+        """
         return_val = []
         for row in predicted_prob:
             prob_data = {}
-            for prob, category in zip(row, self.target_classes):
-                prob_data[category] = prob
+            for prob, category in zip(row, self.clf.classes_):
+               prob_data[category] = prob
             return_val.append(prob_data)
         return return_val
             
 if __name__ == "__main__":        
     nb = NaiveBayesClassifier('train_data/vocabulary', 'train_data/dataset')
     nb.train()
-    docs_new = ['asdfasdfasdf', 'jquery', 'data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery', 'Kernel']
+    docs_new = ['asdfasdfasdf']
+    #docs_new = ['asdfasdfasdf', 'jquery', 'data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery', 'Kernel']
     result = nb.classify(docs_new)
     
     pp.pprint(result)
