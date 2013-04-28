@@ -16,8 +16,10 @@ import urllib
 import marshal
 import pickle
 import cStringIO
+import math
+import copy
 
-pp = pprint.PrettyPrinter(depth = 4)
+pp = pprint.PrettyPrinter(depth = 6)
 
 class ProjectDifficultyCalculator():
   """
@@ -25,8 +27,10 @@ class ProjectDifficultyCalculator():
   If a project has multiple languages, then a cumulative difficult will be assigned as the overall difficulty of the project
 
   """
+  d = {'a':'poioi', 'adovfnr':'asdfgrtr', 'asa': {1:2, 2:3}}
+  #pp.pprint(d)
   def readDataAndDump(self):
-    pp = pprint.PrettyPrinter(depth = 4)
+    pp = pprint.PrettyPrinter(depth = 6)
     allProjects = defaultdict()
     with open('LOC.txt','rb') as f:
       print "loading the dict from pickle file.. please wait.. "
@@ -35,12 +39,15 @@ class ProjectDifficultyCalculator():
         try:
           allProjects.update(pickle.load(f))
           cnt+=1
-          #if cnt>10:
+          #if cnt>20:
           #  break
         except EOFError:
           print 'parsing done!'
           break # no more data in the file
-    #pp.pprint(projectDataObject)
+    print "allprojects"
+    #pp.pprint(allProjects)
+
+
     print 'there are ',len(allProjects), 'projects in total in the pickle file'
 
     allProjLang = defaultdict()   #just stores the sum of squares of all LOC for normalising
@@ -48,24 +55,51 @@ class ProjectDifficultyCalculator():
     langToprojs = defaultdict(set)
     for proj in allProjects:
       #print proj
+      sumThisProjLang = defaultdict()
       languages = allProjects[proj]
       for lang in languages:
         #print lang
-        langToprojs[lang].add(proj)
         if lang in allProjLang:
           allProjLang[lang] += float(languages[lang]*languages[lang])
         else:
           allProjLang[lang] = float(languages[lang]*languages[lang])
     #pp.pprint(langToprojs)
-    with open('lang_to_projects.p','wb') as f:
-      pickle.dump(langToprojs,f)
-    print "pickle has dumped all lang to proj lists in lang_to_projects.p file.. unpickle and integrate"
-
+    
     # substitute the LOC to a normalized LOC
     for proj in allProjects:
       languages = allProjects[proj]
       for lang in languages:
-        languages[lang] = float(languages[lang]/float(allProjLang[lang]))
+        allProjects[proj][lang] = float(allProjects[proj][lang]/math.sqrt(float(allProjLang[lang])))
+
+    # normalize a single project's languages... remove all those languages which have very less normalized value
+    newProjects = copy.deepcopy(allProjects)
+    newProjects1 = copy.deepcopy(allProjects)
+    for proj in newProjects1:
+      sumThisLangNorm = 0.0
+      languages = newProjects1[proj]
+      for lang in languages:
+        sumThisLangNorm += languages[lang]
+      for lang in languages:
+        if sumThisLangNorm == 0:
+          print proj
+          print newProjects1[proj]
+          continue
+        newProjects[proj][lang] = newProjects[proj][lang]/float(sumThisLangNorm)
+        if newProjects[proj][lang] < 0.2:       # threshold for removing project's languages
+          #print "deleting ", proj, " this lang: ", lang
+          del newProjects[proj][lang]
+          del allProjects[proj][lang]         # delete the same language in the original allProjects dict as well
+
+    # print 'projects after throwing away langs'
+
+    # newProjects has projects after throwing away langs which are unnecessary
+    #pp.pprint(newProjects)
+    #pp.pprint(allProjects)
+
+
+
+
+
     # scale it all from 0 to 1 --> 1 is the max project's score. divide every lang's score by that max score
     maxScore = defaultdict()
     for lang in allProjLang:
@@ -79,20 +113,32 @@ class ProjectDifficultyCalculator():
     for proj in allProjects:
       languages = allProjects[proj]
       for lang in languages:
-        languages[lang] = float(languages[lang]/maxScore[lang])
+        allProjects[proj][lang] = float(allProjects[proj][lang]/float(maxScore[lang]))
+        #languages[lang] = float(languages[lang]/maxScore[lang])
     # DONE!!! all scores in langiages is a score from 0 to 1
     for proj in allProjects:
       languages = allProjects[proj]
       difficultyScore[proj] = 0
       for lang in languages:
+        langToprojs[lang].add(proj)
         difficultyScore[proj] = max(languages[lang], difficultyScore[proj])
+    #print 'final difficultyScore'
     #pp.pprint(difficultyScore)
-    """
+    #print 'num of langs: ',len(langToprojs)
+    #print langToprojs
     with open('difficulty_score.p','wb') as f:
       pickle.dump(difficultyScore,f)
     print "pickle has dumped all difficulty scores in difficulty_score.p file.. unpickle and integrate"
-    """
     
+    with open('lang_to_projects.p','wb') as f:
+      pickle.dump(langToprojs,f)
+    print "pickle has dumped all lang to proj lists in lang_to_projects.p file.. unpickle and integrate"
+
+    with open('new_LOC.p','wb') as f:
+      pickle.dump(allProjects,f)
+    print "pickle has dumped proj and list of langs to new_LOC.p file.. unpickle and integrate"
+
+
 
 
 
