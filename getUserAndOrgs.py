@@ -34,21 +34,32 @@ class CollectOrgs():
     print "there are ", len(projectList) , " projects"
     cnt=0
     for proj in projectList:
-      URL = projectList[proj][u'owner'][u'organizations_url'])
-      print URL
-      pp.pprint(proj)
+      URL = projectList[proj][u'owner'][u'organizations_url']
+      orgsList = set()
+      #print URL
+      #pp.pprint(proj)
       project = projectList[proj]
       cnt+=1
-      # URL = project[u'languages_url']
+            # URL = project[u'languages_url']
       # projectFullName = project[u'full_name']
       r = obj.auth_curl_cmd(str(URL))
       if r == None:
         continue
       user_orgs = json.loads(r)
-      projectLOC[projectFullName] = language_loc
+      for company in user_orgs:
+        project_contributors_org[proj] = company[u'login']
+        orgsList.add(company[u'login'])
+        break     # just take the first company
+      """
+      if cnt > 5:
+        print orgsList
+        break
+      """
       print('processing project number: '+str(cnt))
-      with open('project_contributors.p','wb') as fw: pickle.dump(, fw)
       #pp.pprint(projectLOC)
+
+    print orgsList
+    with open('project_contributors.p','wb') as fw: pickle.dump(project_contributors_org, fw)
    
    
 from subprocess import Popen, PIPE
@@ -195,5 +206,5 @@ if __name__ == '__main__':
     #obj = createRequest()
     #obj.get_auth_token()
     #obj.get_top_users_with_followers(6000, 20000)  
-    locObj = getLOC()
-    locObj.getAllLOCandDump()
+    locObj = CollectOrgs()
+    locObj.getOrgsandDump()
