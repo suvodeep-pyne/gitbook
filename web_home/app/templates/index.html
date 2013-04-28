@@ -35,41 +35,24 @@
     <div id="homepage">
       <!-- services area -->
       <section id="services" class="clear">
-<form class="feedbackform">
 
+<div id="user_data">
+<form name="user_data" action="html_form_action.asp" method="post">
 
+<div class="left_pane_wrapper">
 <div class="left_pane">
 
 <div class="fieldwrapper">
 <label for="languages" class="styled">Choose Preferred Languages:</label>
 <div class="thefield">
 	<ul style="margin-top:0;">
-	<li><input type="checkbox" id="html" name="languages" value="" /> <label for="html">HTML/ CSS</label></li>
-	<li><input type="checkbox" id="javascript" name="languages" value=""/> <label for="javascript">JavaScript</label></li>
-	<li><input type="checkbox" id="ajax" name="languages" value="" /> <label for="ajax">Ajax and XML</label></li>
-	<li><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li>
+	{% for language in languages %}
+	<li><input type="checkbox" id="{{language}}" name="languages" value="" /> <label for="{{language}}">{{language}}</label></li>
+	{% endfor %}
+	<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
 	</ul>
-	<span style="font-size: 80%">* Please check all that apply.</span>
 </div>
 </div>
-
-</div>
-
-<div style="right_pane">
-
-<div class="fieldwrapper">
-<label for="languages" class="styled">Choose Preferred Languages:</label>
-<div class="thefield">
-	<ul style="margin-top:0;">
-	<li><input type="checkbox" id="html" name="languages" value="" /> <label for="html">HTML/ CSS</label></li>
-	<li><input type="checkbox" id="javascript" name="languages" value=""/> <label for="javascript">JavaScript</label></li>
-	<li><input type="checkbox" id="ajax" name="languages" value="" /> <label for="ajax">Ajax and XML</label></li>
-	<li><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li>
-	</ul>
-	<span style="font-size: 80%">* Please check all that apply.</span>
-</div>
-</div>
-
 
 <div class="fieldwrapper">
 	<label for="difficulty" class="styled">Choose Difficulty Level:</label>
@@ -80,74 +63,41 @@
 	</div>
 </div>
 
+</div>
+</div>
+
+<div class="right_pane">
+
+<div class="fieldwrapper">
+	<label for="aoi" class="styled">Choose area of interest:</label>
+	<div class="thefield">
+	<ul style="margin-top:0;">
+		{% for aoi in areas_of_interest %}
+		<li><input type="checkbox" id="{{aoi}}" name="{{aoi}}" value=""/> <label for="{{aoi}}">{{aoi}}</label></li>
+		{% endfor %}
+	</ul>	
+	</div>
+</div>
+
+
+
 </div> <!-- Float Left div-->
 
-<div class="fieldwrapper">
-	<label for="username" class="styled">Your Name:</label>
-	<div class="thefield">
-		<input type="text" id="username" value="" size="30" />
-	</div>
-</div>
+<div id="clear"></div>
 
-<div class="fieldwrapper">
-	<label for="email" class="styled">Email address:</label>
-	<div class="thefield">
-		<input type="text" id="email" value="" size="30" /><br />
-		<span style="font-size: 80%">*Note: Please make sure it's correctly entered!</span>
-	</div>
+<div id="submit_wrapper">
+	<input type="submit" id="submit" name="submit" value="Find Projects">
 </div>
-
-<div class="fieldwrapper">
-	<label for="somehighschool" class="styled">education:</label>
-	<div class="thefield">
-		<ul style="margin-top:0;">
-		<li><input type="radio" id="somehighschool" name="education" value=""/> <label for="somehighschool">Some Highschool</label></li>
-		<li><input type="radio" id="highschool" name="education" value="" /> <label for="highschool">Highschool graduate</label></li>
-		<li><input type="radio" id="somecollege" name="education" value="" /> <label for="somecollege">Some college</label></li>
-		<li><input type="radio" id="vocation" name="education" value="" /> <label for="vocation">Vocation school</label></li>
-		<li><input type="radio" id="college" name="education" value="" /> <label for="college">College graduate or higher</label></li>
-		</ul>
-	</div>
-</div>
-
-<div class="fieldwrapper">
-<label for="html" class="styled">Skills:</label>
-<div class="thefield">
-	<ul style="margin-top:0;">
-	<li><input type="checkbox" id="html" name="skills" value="" /> <label for="html">HTML/ CSS</label></li>
-	<li><input type="checkbox" id="javascript" name="skills" value=""/> <label for="javascript">JavaScript</label></li>
-	<li><input type="checkbox" id="ajax" name="skills" value="" /> <label for="ajax">Ajax and XML</label></li>
-	<li><input type="checkbox" id="php" name="skills" value="" /> <label for="php">PHP and Database</label></li>
-	</ul>
-	<span style="font-size: 80%">* Please check all that apply.</span>
-</div>
-</div>
-
-<div class="fieldwrapper">
-<label for="agegroup" class="styled">Department:</label>
-<div class="thefield">
-	<select id="agegroup">
-	<option value="2.1">HR department</option>
-	<option value="3">Sales</option>
-	<option value="4.1">Customer Service/ Support</option>
-	<option value="5.2">Accounting</option>
-	</select>
-</div>
-</div>
-
-<div class="fieldwrapper">
-<label for="about" class="styled">About yourself:</label>
-<div class="thefield">
-	<textarea id="about"></textarea>
-</div>
-</div>
-
-<div class="buttonsdiv">
-<input type="submit" value="Submit" style="margin-left: 150px;" /> <input type="reset" value="Reset" />
-</div>
-
 </form>
 
+<!--
+
+<form name="input" action="html_form_action.asp" method="get">
+Username: <input type="text" name="user">
+<input type="submit" value="Submit">
+</form>
+-->
+</div>
 
 
         <article class="one_quarter">

@@ -1,14 +1,30 @@
-
-
-div.left_pane {
-float:left;
-width:46%;
-padding: 2%;
+div.left_pane_wrapper {
+    float: left;
+    width: 100%;
 }
 
+div.left_pane {
+    margin-right: 500px;
+}
 
 div.right_pane {
-float:right;
-width:400px;
-padding: 2%;
+    float: left;
+    width: 500px;
+    margin-left: -500px;
+}
+
+#clear{
+    clear: both;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#submit_wrapper {
+	width: 100%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 5px;
+	padding-left: 5px;
 }
