@@ -8,7 +8,7 @@ Licence: <a href="http://www.os-templates.com/template-terms">Website Template L
 
 html{overflow-y:scroll;} /* Forces a scrollbar when the viewport is larger than the websites content - CSS3 */
 
-body{margin:0; padding:0; font-size:13px; font-family:Georgia, "Times New Roman", Times, serif; color:#919191; background-color:#232323;}
+body{margin:0; padding:0; font-size:13px; font-family:Georgia, "Times New Roman", Times, serif; color:#221818; background-color:#232323;}
 
 .clear:after{content:"."; display:block; height:0; clear:both; visibility:hidden; line-height:0;}
 .clear{display:block; clear:both;}
@@ -31,7 +31,7 @@ img{margin:0; padding:0; border:none; line-height:normal; vertical-align:middle;
 
 address, article, aside, figcaption, figure, footer, header, hgroup, nav, section{display:block; margin:0; padding:0;}
 
-q{display:block; padding:0 10px 8px 10px; color:#221818; background-color:#ECECEC; font-style:italic; line-height:normal;}
+q{display:block; padding:0 10px 8px 10px; color:#979797; background-color:#ECECEC; font-style:italic; line-height:normal;}
 q:before{content:'“ '; font-size:26px;}
 q:after{content:' „'; font-size:26px; line-height:0;}
 
@@ -40,7 +40,7 @@ q:after{content:' „'; font-size:26px; line-height:0;}
 div.wrapper{display:block; width:100%; margin:0; padding:0; text-align:left;}
 
 .row1, .row1 a{color:#C0BAB6; background-color:#333333;}
-.row2{color:#221818; background-color:#FFFFFF;}
+.row2{color:#979797; background-color:#FFFFFF;}
 .row2 a{color:#FF9900; background-color:#FFFFFF;}
 .row3, .row3 a{color:#919191; background-color:#232323;}
 
@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6{margin:0; padding:0; font-size:16px; font-weight:bold; fo
 
 address{font-style:normal;}
 
-blockquote, q{display:block; padding:8px 10px; color:#221818; background-color:#ECECEC; font-style:italic; line-height:normal;}
+blockquote, q{display:block; padding:8px 10px; color:#979797; background-color:#ECECEC; font-style:italic; line-height:normal;}
 blockquote:before, q:before{content:'“ '; font-size:26px;}
 blockquote:after, q:after{content:' „'; font-size:26px; line-height:0;}
 
