@@ -27,6 +27,7 @@ class ProjectVectorBuilder():
     
     
     def build_projects_vector(self):
+        print "In build projects"
         for name, project in self.project_data.iteritems():
             self.projects[name] = {}
             #readme = project['readme']
@@ -44,6 +45,8 @@ class ProjectVectorBuilder():
             self.projects[name]['description'] = readme
             if len(prob_data) > 0:
                 self.projects[name]['category'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[0]
+        print "Printing maps"
+        pp.pprint(self.projects)
         return self.projects
     
             
@@ -68,5 +71,5 @@ if __name__ == '__main__':
     
     print 'Printing projects Data Structure'
     #pp.pprint(obj.project_vector)
-    pp.pprint(obj.user_ranking[0:10])
+    #pp.pprint(obj.user_ranking[0:10])
     
