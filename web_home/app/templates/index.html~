@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<title>Basic 89</title>
+<title>GitBook</title>
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" type="text/css">
-<!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="wrapper row1">
   <header id="header" class="clear">
     <hgroup>
-      <h1><a href="#">Basic 89</a></h1>
-      <h2>Free HTML5 Website Template</h2>
+      <h1><a href="#">GitBook</a></h1>
+      <h2>Find good stuff to work on</h2>
     </hgroup>
     <nav>
       <ul>
-        <li><a href="#">Text Link</a></li>
-        <li><a href="#">Text Link</a></li>
-        <li><a href="#">Text Link</a></li>
-        <li><a href="#">Text Link</a></li>
-        <li class="last"><a href="#">Text Link</a></li>
+        <li><a href="https://github.com/">Github</a></li>
+        <li><a href="#">StackOverflow</a></li>
+        <li><a href="#">TopCoder</a></li>
+        <li><a href="http://www.spoj.com/">Spoj</a></li>
+        <li class="last"><a href="http://www.acm.org/">ACM</a></li>
       </ul>
     </nav>
   </header>
@@ -28,11 +29,125 @@
 <div class="wrapper row2">
   <div id="container" class="clear">
     <!-- Slider -->
-    <section id="slider"><a href="#"><img src="{{ url_for('static', filename='img/demo/960x360.gif') }}" alt=""></a></section>
+    <!--<section id="slider"><a href="#"><img src="{{ url_for('static', filename='img/demo/960x360.gif') }}" alt=""></a></section> -->
+
     <!-- main content -->
     <div id="homepage">
       <!-- services area -->
       <section id="services" class="clear">
+<form class="feedbackform">
+
+
+<div class="left_pane">
+
+<div class="fieldwrapper">
+<label for="languages" class="styled">Choose Preferred Languages:</label>
+<div class="thefield">
+	<ul style="margin-top:0;">
+	<li><input type="checkbox" id="html" name="languages" value="" /> <label for="html">HTML/ CSS</label></li>
+	<li><input type="checkbox" id="javascript" name="languages" value=""/> <label for="javascript">JavaScript</label></li>
+	<li><input type="checkbox" id="ajax" name="languages" value="" /> <label for="ajax">Ajax and XML</label></li>
+	<li><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li>
+	</ul>
+	<span style="font-size: 80%">* Please check all that apply.</span>
+</div>
+</div>
+
+<div style="right_pane">
+
+<div class="fieldwrapper">
+<label for="languages" class="styled">Choose Preferred Languages:</label>
+<div class="thefield">
+	<ul style="margin-top:0;">
+	<li><input type="checkbox" id="html" name="languages" value="" /> <label for="html">HTML/ CSS</label></li>
+	<li><input type="checkbox" id="javascript" name="languages" value=""/> <label for="javascript">JavaScript</label></li>
+	<li><input type="checkbox" id="ajax" name="languages" value="" /> <label for="ajax">Ajax and XML</label></li>
+	<li><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li>
+	</ul>
+	<span style="font-size: 80%">* Please check all that apply.</span>
+</div>
+</div>
+
+
+<div class="fieldwrapper">
+	<label for="difficulty" class="styled">Choose Difficulty Level:</label>
+	<div class="thefield">
+		<input type="radio" id="easy" name="difficulty" value=""/> <label for="easy">easy</label>
+	<input type="radio" id="medium" name="difficulty" value="" /> <label for="medium">medium</label>
+	<input type="radio" id="hard" name="difficulty" value="" /> <label for="hard">hard</label>
+	</div>
+</div>
+
+</div> <!-- Float Left div-->
+
+<div class="fieldwrapper">
+	<label for="username" class="styled">Your Name:</label>
+	<div class="thefield">
+		<input type="text" id="username" value="" size="30" />
+	</div>
+</div>
+
+<div class="fieldwrapper">
+	<label for="email" class="styled">Email address:</label>
+	<div class="thefield">
+		<input type="text" id="email" value="" size="30" /><br />
+		<span style="font-size: 80%">*Note: Please make sure it's correctly entered!</span>
+	</div>
+</div>
+
+<div class="fieldwrapper">
+	<label for="somehighschool" class="styled">education:</label>
+	<div class="thefield">
+		<ul style="margin-top:0;">
+		<li><input type="radio" id="somehighschool" name="education" value=""/> <label for="somehighschool">Some Highschool</label></li>
+		<li><input type="radio" id="highschool" name="education" value="" /> <label for="highschool">Highschool graduate</label></li>
+		<li><input type="radio" id="somecollege" name="education" value="" /> <label for="somecollege">Some college</label></li>
+		<li><input type="radio" id="vocation" name="education" value="" /> <label for="vocation">Vocation school</label></li>
+		<li><input type="radio" id="college" name="education" value="" /> <label for="college">College graduate or higher</label></li>
+		</ul>
+	</div>
+</div>
+
+<div class="fieldwrapper">
+<label for="html" class="styled">Skills:</label>
+<div class="thefield">
+	<ul style="margin-top:0;">
+	<li><input type="checkbox" id="html" name="skills" value="" /> <label for="html">HTML/ CSS</label></li>
+	<li><input type="checkbox" id="javascript" name="skills" value=""/> <label for="javascript">JavaScript</label></li>
+	<li><input type="checkbox" id="ajax" name="skills" value="" /> <label for="ajax">Ajax and XML</label></li>
+	<li><input type="checkbox" id="php" name="skills" value="" /> <label for="php">PHP and Database</label></li>
+	</ul>
+	<span style="font-size: 80%">* Please check all that apply.</span>
+</div>
+</div>
+
+<div class="fieldwrapper">
+<label for="agegroup" class="styled">Department:</label>
+<div class="thefield">
+	<select id="agegroup">
+	<option value="2.1">HR department</option>
+	<option value="3">Sales</option>
+	<option value="4.1">Customer Service/ Support</option>
+	<option value="5.2">Accounting</option>
+	</select>
+</div>
+</div>
+
+<div class="fieldwrapper">
+<label for="about" class="styled">About yourself:</label>
+<div class="thefield">
+	<textarea id="about"></textarea>
+</div>
+</div>
+
+<div class="buttonsdiv">
+<input type="submit" value="Submit" style="margin-left: 150px;" /> <input type="reset" value="Reset" />
+</div>
+
+</form>
+
+
+
         <article class="one_quarter">
           <figure><img src="{{ url_for('static', filename='img/demo/32x32.gif') }}" width="32" height="32" alt=""></figure>
           <strong>Lorum ipsum dolor</strong>
@@ -113,14 +228,6 @@
       <nav>
         <ul>
           <li><a href="#">Free Website Templates</a></li>
-          <li><a href="#">Free CSS Templates</a></li>
-          <li><a href="#">Free XHTML Templates</a></li>
-          <li><a href="#">Free Web Templates</a></li>
-          <li><a href="#">Free Website Layouts</a></li>
-          <li><a href="#">Free HTML 5 Templates</a></li>
-          <li><a href="#">Free Webdesign Templates</a></li>
-          <li><a href="#">Free FireWorks Templates</a></li>
-          <li><a href="#">Free PNG Templates</a></li>
           <li class="last"><a href="#">Free Website Themes</a></li>
         </ul>
       </nav>
@@ -132,8 +239,8 @@
 <!-- Footer -->
 <div class="wrapper row3">
   <footer id="footer" class="clear">
-    <p class="fl_left">Copyright &copy; 2012 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
+    <p class="fl_left">Copyright &copy; 2013 - All Rights Reserved - <a href="#">GitBook</a></p>
+    <p class="fl_right">Project by Ashwath Rajendran, Garima Agarwal and Suvodeep Pyne</a></p>
   </footer>
 </div>
 </body>
