@@ -17,12 +17,21 @@ def about():
 
 @app.route('/results')
 def results():
-  results = [{'projectName': 'login' , 'owner':'ownername'} , {'projectName': 'login' , 'owner':'ownername'}]
-  with open("/home/ash/code/IR/gitbook/web_home/app/tmpProjs.p","rb") as fr: 
-    results1 = pickle.load(fr)
+  """
+  Compute the reccomendation for the user using his preferences and assign it to the variable results.
+  Call the Reccomender class here... integrate it with all!!
+  
+  This is where you will have to dump the Reccomender's code
+  """
+  
+  
+  #results = [{'projectName': 'login' , 'owner':'ownername'} , {'projectName': 'login' , 'owner':'ownername'}]
+  with open("/home/ash/code/IR/gitbook/web_home/app/tmpProjs.p","rb") as fr: results = pickle.load(fr)
   with open("/home/ash/code/IR/gitbook/web_home/app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
+  
   aoi = ['machine-learning', 'artificial-intelligence']
-  return render_template('results.html' , areas_of_interest=aoi, results=results1 , companies = companies)
+  
+  return render_template('results.html' , areas_of_interest=aoi, results=results , companies = companies)
 
 @app.route('/layout')
 def layout():
