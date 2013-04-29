@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<title>GitBook</title>
+<meta charset="iso-8859-1">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper row1">
+  <header id="header" class="clear">
+    <hgroup>
+      <h1><a href="#">GitBook</a></h1>
+      <h2>Find good stuff to work on</h2>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><a href="https://github.com/">Github</a></li>
+        <li><a href="#">StackOverflow</a></li>
+        <li><a href="#">TopCoder</a></li>
+        <li><a href="http://www.spoj.com/">Spoj</a></li>
+        <li class="last"><a href="http://www.acm.org/">ACM</a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<!-- content -->
+<div class="wrapper row2">
+  <div id="container" class="clear">
+    <!-- Slider -->
+    <!--<section id="slider"><a href="#"><img src="{{ url_for('static', filename='img/demo/960x360.gif') }}" alt=""></a></section> -->
+
+    <!-- main content -->
+    <div id="homepage">
+      <!-- services area -->
+      <section id="services" class="clear">
+
+<div id="user_data">
+<form name="user_data" action="html_form_action.asp" method="post">
+
+<div class="left_pane_wrapper">
+<div class="left_pane">
+
+<div class="fieldwrapper">
+<label for="languages" class="styled">Results of the page are:</label>
+<div class="thefield">
+	<ul style="margin-top:0;">
+	{% for result in results %}
+	{% for key in results[result] %}
+	<li><p id="{{key}}" name="results" > {{key}} : {{results[result][key]}} </p></li>
+	{% endfor %}
+	{% endfor %}
+	<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
+	</ul>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="right_pane">
+
+<div class="fieldwrapper">
+	<label for="aoi" class="styled">Area of interest:</label>
+	<div class="thefield">
+	<ul style="margin-top:0;">
+		{% for aoi in areas_of_interest %}
+		<li><input type="checkbox" id="{{aoi}}" name="{{aoi}}" value=""/> <label for="{{aoi}}">{{aoi}}</label></li>
+		{% endfor %}
+	</ul>	
+	</div>
+</div>
+
+
+
+</div> <!-- Float Left div-->
+
+<div id="clear"></div>
+
+</form>
+
+<!--
+
+<form name="input" action="html_form_action.asp" method="get">
+Username: <input type="text" name="user">
+<input type="submit" value="Submit">
+</form>
+-->
+</div>
+
+      </section>
+      <!-- / services area -->
+      <!-- ########################################################################################## -->
+      <!-- ########################################################################################## -->
+      <!-- ########################################################################################## -->
+      <!-- ########################################################################################## -->
+      <!-- / latest work -->
+    </div>
+    <!-- main content -->
+    <div id="content">
+      <section id="posts" class="last clear">
+        <ul>
+          <li>
+            <article class="clear">
+              <figure><img src="{{ url_for('static', filename='img/demo/180x150.gif') }}" alt="">
+                <figcaption>
+                  <h2>Indonectetus facilis leo nibh</h2>
+                  <p>This is a W3C compliant free website template from <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>. For full terms of use of this template please read our <a href="http://www.os-templates.com/template-terms">website template licence</a>.</p>
+                  <footer class="more"><a href="#">Read More &raquo;</a></footer>
+                </figcaption>
+              </figure>
+            </article>
+          </li>
+          
+        </ul>
+      </section>
+    </div>
+    <!-- right column -->
+    <aside id="right_column">
+      <h2 class="title">Categories</h2>
+      <nav>
+        <ul>
+          <li><a href="#">Free Website Templates</a></li>
+          <li class="last"><a href="#">Free Website Themes</a></li>
+        </ul>
+      </nav>
+      <!-- /nav -->
+    </aside>
+    <!-- / content body -->
+  </div>
+</div>
+<!-- Footer -->
+<div class="wrapper row3">
+  <footer id="footer" class="clear">
+    <p class="fl_left">Copyright &copy; 2013 - All Rights Reserved - <a href="#">GitBook</a></p>
+    <p class="fl_right">Project by Ashwath Rajendran, Garima Agarwal and Suvodeep Pyne</a></p>
+  </footer>
+</div>
+</body>
+</html>
