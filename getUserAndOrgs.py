@@ -52,9 +52,10 @@ class CollectOrgs():
         break     # just take the first company
       """
       if cnt > 5:
+        pp.pprint(projectList[proj])
         print orgsList
         break
-      """
+      #"""
       print('processing project number: '+str(cnt))
       #pp.pprint(projectLOC)
 
