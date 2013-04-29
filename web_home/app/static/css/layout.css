@@ -32,8 +32,8 @@ img{margin:0; padding:0; border:none; line-height:normal; vertical-align:middle;
 address, article, aside, figcaption, figure, footer, header, hgroup, nav, section{display:block; margin:0; padding:0;}
 
 q{display:block; padding:0 10px 8px 10px; color:#221818; background-color:#ECECEC; font-style:italic; line-height:normal;}
-q:before{content:'“ '; font-size:26px;}
-q:after{content:' „'; font-size:26px; line-height:0;}
+q:before{content:'ï¿½ '; font-size:26px;}
+q:after{content:' ï¿½'; font-size:26px; line-height:0;}
 
 /* ----------------------------------------------Wrapper-------------------------------------*/
 
@@ -55,8 +55,8 @@ h1, h2, h3, h4, h5, h6{margin:0; padding:0; font-size:16px; font-weight:bold; fo
 address{font-style:normal;}
 
 blockquote, q{display:block; padding:8px 10px; color:#221818; background-color:#ECECEC; font-style:italic; line-height:normal;}
-blockquote:before, q:before{content:'“ '; font-size:26px;}
-blockquote:after, q:after{content:' „'; font-size:26px; line-height:0;}
+blockquote:before, q:before{content:'ï¿½ '; font-size:26px;}
+blockquote:after, q:after{content:' ï¿½'; font-size:26px; line-height:0;}
 
 form, fieldset, legend{margin:0; padding:0; border:none;}
 legend{display:none;}
@@ -137,7 +137,7 @@ input, textarea, select{font-size:12px; font-family:Georgia,"Times New Roman",Ti
 
 /* ------Right Column-----*/
 
-#container #right_column{float:right; width:280px;}
+#container #right_column{float:right; width:320px;}
 #container #right_column h2.title{margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #DEDEDE;}
 
 #container #right_column nav{display:block; width:100%;}

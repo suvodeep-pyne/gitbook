@@ -37,7 +37,8 @@
       <section id="services" class="clear">
 
 <div id="user_data">
-<form name="user_data" action="html_form_action.asp" method="post">
+ <!--  Commented the form here.. revoke back from this point if needed -->
+<!-- <form name="user_data" action="html_form_action.asp" method="post"> -->
 
 <div class="left_pane_wrapper">
 <div class="left_pane">
@@ -86,9 +87,11 @@
 <div id="clear"></div>
 
 <div id="submit_wrapper">
-	<input type="submit" id="submit" name="submit" value="Find Projects">
+	<!-- <input type="submit" id="submit" name="submit" value="Find Projects" > -->
+	<a href="{{url_for('results')}}"><img src="{{ url_for('static', filename='img/github-logo.png') }}" width = 25% height =25% alt=""> Find projects</a>
 </div>
-</form>
+<!-- </form> -->
+
 
 <!--
 
@@ -99,92 +102,25 @@ Username: <input type="text" name="user">
 -->
 </div>
 
+</section>
 
-        <article class="one_quarter">
-          <figure><img src="{{ url_for('static', filename='img/demo/32x32.gif') }}" width="32" height="32" alt=""></figure>
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><a href="#">Read More &raquo;</a></p>
-        </article>
-        <article class="one_quarter">
-          <figure><img src="{{ url_for('static', filename='img/demo/32x32.gif') }}" width="32" height="32" alt=""></figure>
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><a href="#">Read More &raquo;</a></p>
-        </article>
-        <article class="one_quarter">
-          <figure><img src="{{ url_for('static', filename='img/demo/32x32.gif') }}" width="32" height="32" alt=""></figure>
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><a href="#">Read More &raquo;</a></p>
-        </article>
-        <article class="one_quarter lastbox">
-          <figure><img src="{{ url_for('static', filename='img/demo/32x32.gif') }}" width="32" height="32" alt=""></figure>
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><a href="#">Read More &raquo;</a></p>
-        </article>
-      </section>
-      <!-- / services area -->
-      <!-- ########################################################################################## -->
-      <!-- ########################################################################################## -->
-      <!-- ########################################################################################## -->
-      <!-- ########################################################################################## -->
-      <!-- / latest work -->
       <section id="latest">
         <article>
           <figure>
             <ul class="clear">
-              <li class="one_third"><img src="{{ url_for('static', filename='img/demo/290x180.gif') }}" width="290" height="180" alt=""></li>
-              <li class="one_third"><img src="{{ url_for('static', filename='img/demo/290x180.gif') }}" width="290" height="180" alt=""></li>
-              <li class="one_third lastbox"><img src="{{ url_for('static', filename='img/demo/290x180.gif') }}" width="290" height="180" alt=""></li>
+              <li class="one_third"> Use this space if needed</li>
+              <li class="one_third">Use this space if needed</li>
+              <li class="one_third lastbox">Use this space if needed</li>
             </ul>
-            <figcaption><a href="#">View All Our Recent Work Here &raquo;</a></figcaption>
           </figure>
         </article>
       </section>
       <!-- / latest work -->
     </div>
     <!-- main content -->
-    <div id="content">
-      <section id="posts" class="last clear">
-        <ul>
-          <li>
-            <article class="clear">
-              <figure><img src="{{ url_for('static', filename='img/demo/180x150.gif') }}" alt="">
-                <figcaption>
-                  <h2>Indonectetus facilis leo nibh</h2>
-                  <p>This is a W3C compliant free website template from <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>. For full terms of use of this template please read our <a href="http://www.os-templates.com/template-terms">website template licence</a>.</p>
-                  <footer class="more"><a href="#">Read More &raquo;</a></footer>
-                </figcaption>
-              </figure>
-            </article>
-          </li>
-          <li class="last">
-            <article class="clear">
-              <figure><img src="{{ url_for('static', filename='img/demo/180x150.gif') }}" alt="">
-                <figcaption>
-                  <h2>Indonectetus facilis leo nibh</h2>
-                  <p>You can use and modify the template for both personal and commercial use. You must keep all copyright information and credit links in the template and associated files. For more HTML5 templates visit <a href="http://www.os-templates.com/">free website templates</a>.</p>
-                  <footer class="more"><a href="#">Read More &raquo;</a></footer>
-                </figcaption>
-              </figure>
-            </article>
-          </li>
-        </ul>
-      </section>
-    </div>
+   
     <!-- right column -->
-    <aside id="right_column">
-      <h2 class="title">Categories</h2>
-      <nav>
-        <ul>
-          <li><a href="#">Free Website Templates</a></li>
-          <li class="last"><a href="#">Free Website Themes</a></li>
-        </ul>
-      </nav>
-      <!-- /nav -->
-    </aside>
+    
     <!-- / content body -->
   </div>
 </div>

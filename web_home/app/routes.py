@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import pickle
  
 app = Flask(__name__)      
  
@@ -11,14 +12,17 @@ def home():
 
 @app.route('/about')
 def about():
+  print "this is printed whenever the about page is called!!!!!!!!!!!!!!!!!!!!!!!"
   return render_template('about.html')
 
 @app.route('/results')
 def results():
-  results = { 'project1' : {'projectName': 'login' , 'owner':'ownername'} , 'project2' : {'projectName': 'login' , 'owner':'ownername'}}
-  results1 = { 'project1': { u'html_url': u'https://github.com/ezmobius',u'login': u'ezmobius',u'organizations_url': u'https://api.github.com/users/ezmobius/orgs', u'repos_url': u'https://api.github.com/users/ezmobius/repos',u'url': u'https://api.github.com/repos/ezmobius/nanite', u'watchers_count': 770}}
+  results = [{'projectName': 'login' , 'owner':'ownername'} , {'projectName': 'login' , 'owner':'ownername'}]
+  with open("/home/ash/code/IR/gitbook/web_home/app/tmpProjs.p","rb") as fr: 
+    results1 = pickle.load(fr)
+  with open("/home/ash/code/IR/gitbook/web_home/app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
   aoi = ['machine-learning', 'artificial-intelligence']
-  return render_template('results.html' , areas_of_interest=aoi, results=results1)
+  return render_template('results.html' , areas_of_interest=aoi, results=results1 , companies = companies)
 
 @app.route('/layout')
 def layout():
