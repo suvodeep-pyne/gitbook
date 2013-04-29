@@ -27,6 +27,7 @@ class CollectOrgs():
     obj = createRequest()
     obj.get_auth_token()
     project_contributors_org = defaultdict()
+    tmpProjList = []
     prevTime = time.time()
     numReq = 0
     projectDataObject = DataRetriever('./github_data')
@@ -39,6 +40,7 @@ class CollectOrgs():
       #print URL
       #pp.pprint(proj)
       project = projectList[proj]
+      tmpProjList.append(projectList[proj])
       cnt+=1
             # URL = project[u'languages_url']
       # projectFullName = project[u'full_name']
@@ -50,17 +52,26 @@ class CollectOrgs():
         project_contributors_org[proj] = company[u'login']
         orgsList.add(company[u'login'])
         break     # just take the first company
-      """
-      if cnt > 5:
-        pp.pprint(projectList[proj])
-        print orgsList
+      #"""
+      if cnt > 2:
+        #pp.pprint(projectList[proj])
+        #print orgsList
+        with open('tmpProjs.p','wb') as fw: pickle.dump(tmpProjList, fw)
         break
       #"""
       print('processing project number: '+str(cnt))
       #pp.pprint(projectLOC)
 
-    print orgsList
-    with open('project_contributors.p','wb') as fw: pickle.dump(project_contributors_org, fw)
+    #print orgsList
+    #with open('project_contributors.p','wb') as fw: pickle.dump(project_contributors_org, fw)
+
+    with open('tmpProjs.p','rb') as fr: results = pickle.load(fr)
+    print "results file"
+    pp.pprint(results)
+    for result in results:
+        print 'printing what proj is: ',result[u'full_name']
+        print result[u'url']
+    
    
    
 from subprocess import Popen, PIPE
