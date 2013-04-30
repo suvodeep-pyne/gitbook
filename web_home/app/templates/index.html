@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" type="text/css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+ 
+});
+</script>
 </head>
 <body>
 <div class="wrapper row1">
@@ -46,12 +51,11 @@
 <div class="fieldwrapper">
 <label for="languages" class="styled">Choose Preferred Languages:</label>
 <div class="thefield">
-	<ul style="margin-top:0;">
-	{% for language in languages %}
-	<li><input type="checkbox" id="{{language}}" name="languages" value="{{language}}" /> <label for="{{language}}">{{language}}</label></li>
-	{% endfor %}
-	<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
-	</ul>
+	<select name="languages" multiple>
+		{% for language in languages %}
+		<option value="{{language}}">{{language}}</option>
+		{% endfor %}
+	</select>
 </div>
 </div>
 

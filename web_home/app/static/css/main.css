@@ -6,6 +6,12 @@
 	background-color:#FFFFD1;
 	
 }
+
+select {
+	width: 200px;
+	height: 200px;
+}
+
 div.left_pane_wrapper {
     float: left;
     width: 100%;
