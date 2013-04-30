@@ -36,14 +36,12 @@
         
 			<p style="color:red;">No results for projects classified in 
         {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
-        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
-        with difficulty level: {{data['difficulty'][0]}}
+        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %}
         </p>
 			{% else %}
         <p>Showing {{results_size}} search result{% if results_size > 1 %}s{% endif %} for projects classified in 
         {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
         written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
-        with difficulty level: {{data['difficulty'][0]}}
         </p>
 			<ul style="margin-top:0; margin-bottom:40px">
 			{% for result in results %}		<!-- for iterating through the list of normal proj dict objects -->	

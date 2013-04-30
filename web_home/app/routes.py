@@ -35,11 +35,12 @@ def results():
       data[key] = request_data.getlist(key)
 
     with open("app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
-    projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
+    projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'],'any')
   except:
     return redirect('/index')
   
   output_companies = []
+  output_dufficulties = {}
   output_contributors = []
   for project in projects:
     output_contributors.append((project['contributors'],project['contributors_url']))
@@ -53,7 +54,7 @@ def results():
   output_contributors = output_contributors[:10]
 
   """
-  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob' , 'contributors']
+  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob' , 'contributors' ]
 
   """
   return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = output_companies, contributors= output_contributors)
