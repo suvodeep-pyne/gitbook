@@ -85,6 +85,7 @@ class Recommender():
             with open(naive_prob_file, 'rb') as f:
                 print "Reading probabilities from the file"
                 self.project_vector = marshal.load(f)
+            with open(naive_prob_file, 'rb') as f:
                 self.categories = marshal.load(f)
                 print self.categories[0]
         except:
@@ -94,9 +95,10 @@ class Recommender():
             self.categories = list(self.project_vector_builder.nb.clf.classes_)
             with open(naive_prob_file, 'wb') as f:
                 marshal.dump(self.project_vector, f)
+            with open(naive_prob_file, 'ab') as f:
                 marshal.dump(self.categories, f)
 
-        #self.user_ranking = pagerank(self.user_data, self.user_follower_map)
+        self.user_ranking = pagerank(self.user_data)
         with open(os.path.join(GITHUB_DATA, 'lang_to_projects.p'), 'rb') as f:
           self.language_proj = pickle.load(f)
         
@@ -121,6 +123,33 @@ class Recommender():
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
+        pp.pprint(sorted_similar_projects)
+
+        #pp.pprint(self.user_ranking)
+        sortedProjsLength = len(sorted_similar_projects)
+        for i in range(0,len(sorted_similar_projects)):
+          proj = sorted_similar_projects[i]
+          project = self.project_data[proj[u'full_name']]
+          owner = project[u'owner']
+          zipped = map(list, zip(*self.user_ranking))
+          userLists = zipped[0]
+          PRs = zipped[1]
+          if owner in userLists:
+            userIndex = userLists.index(owner)
+            sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
+            sorted_similar_projects[i]['owner'] = owner
+          else:
+            sorted_similar_projects[i]['page_rank_of_owner'] = 0
+            sorted_similar_projects[i]['owner'] = owner
+
+        # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
+        firstListToSort = sorted_similar_projects[]
+
+
+
+
+
+
         return sorted_similar_projects
 
 class CommandLineInterface(cmd.Cmd):
