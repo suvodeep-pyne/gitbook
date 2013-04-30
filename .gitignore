@@ -1,6 +1,7 @@
 .project
 .pydevproject
 
+*.html~
 *.py~
 *.pyc
 *.tmp
