@@ -46,6 +46,7 @@ class DataRetriever():
                 new_project['contributors'] = project['contributors']
                 new_project['contributors_url'] = project['contributors_url']
                 new_project['languages_url'] = project['languages_url']
+                new_project['description'] = project['description']
                 new_project['name'] = project['name']
                 readme_dict = (project["readme"])
                 if readme_dict != []:
