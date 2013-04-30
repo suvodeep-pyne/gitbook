@@ -122,7 +122,10 @@ class Recommender():
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
+<<<<<<< Updated upstream
         pp.pprint(sorted_similar_projects)
+=======
+>>>>>>> Stashed changes
         zipped = map(list, zip(*self.user_ranking))
         userLists = zipped[0]
         PRs = zipped[1]
