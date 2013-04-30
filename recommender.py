@@ -116,8 +116,8 @@ class Recommender():
 
             if self.project_vector[project]['category'] in area_interest:
                 project_desc = self.project_vector[project]
-                project_desc['html_url'] = self.project_data['html_url']
-                project_desc['full_name'] = self.project_data['full_name']
+                project_desc['html_url'] = self.project_data[project]['html_url']
+                project_desc['full_name'] = self.project_data[project]['full_name']
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
