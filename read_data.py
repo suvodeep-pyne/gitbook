@@ -35,14 +35,24 @@ class DataRetriever():
             if not fnmatch.fnmatch(files, "project[0-9]*"):
                 continue
             filename = os.path.join(self.directory, files)
+            print filename
             fh = open(filename,"rb")
             data = marshal.load(fh)
             for project in data:
+                new_project = {}
+                new_project['full_name'] = project['full_name']
+                new_project['owner']  = project['owner']
+                new_project['html_url'] = project['html_url']
+                new_project['contributors'] = project['contributors']
+                new_project['contributors_url'] = project['contributors_url']
+                new_project['languages_url'] = project['languages_url']
+                new_project['name'] = project['name']
                 readme_dict = (project["readme"])
                 if readme_dict != []:
                     readme = readme_dict["content"]
-                    project["readme"] = base64.b64decode(readme) 
-                self.project_data[project[u'full_name']] = project
+                    new_project["readme"] = base64.b64decode(readme) 
+                self.project_data[project[u'full_name']] = new_project
+            fh.close()
         return self.project_data
         
     """Builds user data structure"""
@@ -74,4 +84,4 @@ if __name__ == '__main__':
     dirname = sys.argv[1]
     obj = DataRetriever(dirname)
     project = obj.parseProjectData()
-    pp.pprint(project)
+    pp.pprint(len(project))
