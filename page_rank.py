@@ -12,6 +12,7 @@ from read_data import *
 
 ALPHA = 0.9
 ERROR_BOUND = 0.0000001
+GITHUB_DATA = 'github_data'
 
 user_followers = {}
 pr_graph = {}
@@ -119,4 +120,7 @@ def pagerank(user, u_f_m):
     """
 
 if __name__ == '__main__':
-   pagerank() 
+    directory_name = GITHUB_DATA
+    data_retriever = DataRetriever(directory_name)
+    user_data, user_follower_map = data_retriever.parseUserFollowers()
+    user_ranking = pagerank(user_data, user_follower_map)
