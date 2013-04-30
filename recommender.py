@@ -77,7 +77,7 @@ class Recommender():
         return lang_dict        
 
     def get_aoi(self):
-        return self.project_vector_builder.nb.clf.classes_
+        return self.categories
     
     """Get different scores for each project"""
     def build_project_features(self):
@@ -85,12 +85,16 @@ class Recommender():
             with open(naive_prob_file, 'rb') as f:
                 print "Reading probabilities from the file"
                 self.project_vector = marshal.load(f)
+                self.categories = marshal.load(f)
+                print self.categories[0]
         except:
             print "Generating a new Naive Base classifier"
             self.project_vector_builder = ProjectVectorBuilder(self.project_data)
             self.project_vector = self.project_vector_builder.build_projects_vector()
+            self.categories = list(self.project_vector_builder.nb.clf.classes_)
             with open(naive_prob_file, 'wb') as f:
                 marshal.dump(self.project_vector, f)
+                marshal.dump(self.categories, f)
 
         #self.user_ranking = pagerank(self.user_data, self.user_follower_map)
         with open(os.path.join(GITHUB_DATA, 'lang_to_projects.p'), 'rb') as f:
@@ -102,9 +106,6 @@ class Recommender():
     def recommend_projects(self, languages, area_interest, difficulty): 
         print "Calling recommender"
         projects = set()
-        print languages
-        print area_interest
-        print difficulty
         #Filter based on languages
         for language in languages:
             projects = projects.union(self.language_proj[language]) 
@@ -129,6 +130,7 @@ class CommandLineInterface(cmd.Cmd):
         self.obj = Recommender()
         self.obj.build_project_features()
         self.name = "garima"
+        print self.obj.get_aoi()
         self.prompt = ">> "
     
     def do_recommend_projects(self, args):
@@ -151,7 +153,6 @@ if __name__ == '__main__':
     cmi = CommandLineInterface()
     cmi.cmdloop()
     #print obj.get_languages()
-    #print obj.get_aoi()
     print "Getting recommended projects"
     print 'Printing projects Data Structure'
     #pp.pprint(obj.projects)
