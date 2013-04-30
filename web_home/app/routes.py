@@ -38,12 +38,19 @@ def results():
     projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
   except:
     return redirect('/index')
+  
+  output_companies = []
+  for project in projects:
+    if project['full_name'] in companies:
+    	output_companies.append(companies[project['full_name']])
+  
+  output_companies = output_companies[:10]
 
   """
   		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
 
   """
-  return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = companies)
+  return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = output_companies)
 
 @application.route('/layout')
 def layout():

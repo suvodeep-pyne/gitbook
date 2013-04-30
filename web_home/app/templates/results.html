@@ -69,12 +69,8 @@
 	  <h2 class="title">Recommended Organizations</h2>
 	  <nav>
 		<ul>
-		  {% for result in results %}
 		  {% for company in companies %}
-		  {% if result['full_name'] == company %}
-			<li><a href="#"> {{ companies[company] }} </a></li>
-		  {% endif %}
-		  {% endfor %}
+			<li><a href="#"> {{ company }} </a></li>
 		  {% endfor %}
 		</ul>
 	  </nav>

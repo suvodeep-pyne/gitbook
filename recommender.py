@@ -85,7 +85,6 @@ class Recommender():
             with open(naive_prob_file, 'rb') as f:
                 print "Reading probabilities from the file"
                 self.project_vector = marshal.load(f)
-            with open(naive_prob_file, 'rb') as f:
                 self.categories = marshal.load(f)
                 print self.categories[0]
         except:
@@ -123,9 +122,7 @@ class Recommender():
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
-        pp.pprint(sorted_similar_projects)
 
-        #pp.pprint(self.user_ranking)
         sortedProjsLength = len(sorted_similar_projects)
         for i in range(0,len(sorted_similar_projects)):
           proj = sorted_similar_projects[i]
