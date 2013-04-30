@@ -1,4 +1,10 @@
-from flask import Flask, render_template
+'''
+Created on Apr 29, 2013
+
+@author: Suvodeep Pyne
+'''
+
+from flask import Flask, render_template, request, Response
 import pickle
  
 from app import application
@@ -20,13 +26,14 @@ def about():
   print "this is printed whenever the about page is called!!!!!!!!!!!!!!!!!!!!!!!"
   return render_template('about.html')
 
-@application.route('/results')
+@application.route('/results', methods = ['GET', 'POST'])
 def results():
+  request_data = request.args
   """
-  Compute the reccomendation for the user using his preferences and assign it to the variable results.
-  Call the Reccomender class here... integrate it with all!!
+  Compute the recommendation for the user using his preferences and assign it to the variable results.
+  Call the Recommender class here... integrate it with all!!
   
-  This is where you will have to dump the Reccomender's code
+  This is where you will have to dump the Recommender's code
   """
   
   

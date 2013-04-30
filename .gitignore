@@ -7,3 +7,6 @@
 *.bak
 *.swp
 *.log
+
+web_home/app/gitbook
+
