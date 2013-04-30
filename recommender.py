@@ -135,15 +135,22 @@ class Recommender():
             userIndex = userLists.index(owner[u'login'])
             sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
             sorted_similar_projects[i]['owner'] = owner[u'login']
-            #print 'owner: ', owner['login']
-            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
+            #sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
+            if len(self.project_data[proj['full_name']]['contributors']) >=1:
+              sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
+            else:
+              sorted_similar_projects[i]['contributors'] = ''
 
           else:
             sorted_similar_projects[i]['page_rank_of_owner'] = 0
             sorted_similar_projects[i]['owner'] = owner[u'login']
-            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
+            if len(self.project_data[proj['full_name']]['contributors']) >=1:
+              sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
+            else:
+              sorted_similar_projects[i]['contributors'] = ''
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
+        # have the contributors tag with the first contributor for the server side handling
 
 
         #"""
