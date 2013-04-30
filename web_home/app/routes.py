@@ -29,6 +29,9 @@ def about():
 @application.route('/results', methods = ['GET', 'POST'])
 def results():
   request_data = request.args
+  print request_data
+  #projects = gitbook.recommend_projects(self, languages, area_interest, difficulty)
+  
   """
   Compute the recommendation for the user using his preferences and assign it to the variable results.
   Call the Recommender class here... integrate it with all!!
