@@ -40,17 +40,23 @@ def results():
     return redirect('/index')
   
   output_companies = []
+  output_contributors = []
   for project in projects:
+    output_contributors.append((project['contributors'],project['contributors_url']))
     if project['full_name'] in companies:
     	output_companies.append(companies[project['full_name']])
-  
+    	
+  output_companies = list(set(output_companies))
   output_companies = output_companies[:10]
+  
+  output_contributors = list(set(output_contributors))
+  output_contributors = output_contributors[:10]
 
   """
-  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
+  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob' , 'contributors']
 
   """
-  return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = output_companies)
+  return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = output_companies, contributors= output_contributors)
 
 @application.route('/layout')
 def layout():

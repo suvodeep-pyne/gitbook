@@ -70,7 +70,7 @@
 	  <nav>
 		<ul>
 		  {% for company in companies %}
-			<li><a href="#"> {{ company }} </a></li>
+			<li><a href="https://github.com/{{ company }}"> {{ company }} </a></li>
 		  {% endfor %}
 		</ul>
 	  </nav>
@@ -78,8 +78,10 @@
 	  <h2 class="title" > Recommended users to follow</h2>
 	  <nav>
 		<ul>
-			<li><a href="#"> Person Name </a></li>
-			<li><a href="#"> Person Name </a></li>
+		{% for result in contributors %}
+			<li><a href="{{result[1]}}"> {{result[0]}} </a></li>
+		{% endfor %}
+			
 		</ul>
 	  </nav>
 	  <!-- /nav -->
