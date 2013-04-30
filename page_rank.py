@@ -109,8 +109,7 @@ def pagerank(user, u_f_m):
     users_ranking = map(lambda x: (x[0], x[1] / scale_value), ranked_users[1:])
     users_ranking = [ranked_users[0]] + users_ranking
     #normalize the scores
-    print users_ranking[:30]
-    t1 = time.clock()
+    return users_ranking
    
     """ 
     print
