@@ -11,7 +11,7 @@
 <div class="wrapper row1">
   <header id="header" class="clear">
     <hgroup>
-      <h1><a href="#">GitBook</a></h1>
+      <h1><a href="/">GitBook</a></h1>
       <h2>Find good stuff to work on</h2>
     </hgroup>
     <nav>
@@ -40,7 +40,7 @@
         with difficulty level: {{data['difficulty'][0]}}
         </p>
 			{% else %}
-        <p>Showing {{results_size}} search results for projects classified in 
+        <p>Showing {{results_size}} search result{% if results_size > 1 %}s{% endif %} for projects classified in 
         {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
         written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
         with difficulty level: {{data['difficulty'][0]}}
@@ -69,14 +69,8 @@
 	  <h2 class="title">Recommended Organizations</h2>
 	  <nav>
 		<ul>
-			<li><a href="#"> Company Name </a></li>
-			<li><a href="#"> Company Name </a></li>
-		  {% for result in results %}
 		  {% for company in companies %}
-		  {% if result['full_name'] == company %}
-			<li><a href="#"> {{ companies[company] }} </a></li>
-		  {% endif %}
-		  {% endfor %}
+			<li><a href="#"> {{ company }} </a></li>
 		  {% endfor %}
 		</ul>
 	  </nav>
@@ -89,15 +83,17 @@
 		</ul>
 	  </nav>
 	  <!-- /nav -->
+	  <br></br>
+	  {% if results_size < 5 %}{% for i in range(2, 5 - results_size) %}<br></br>{% endfor %}{% endif %}
+		
 	</aside>
     <!-- / content body -->
   </div>
 </div>
-
 <!-- Footer -->
 <div class="wrapper row3">
   <footer id="footer" class="clear">
-    <p class="fl_left">Copyright &copy; 2013 - All Rights Reserved - <a href="#">GitBook</a></p>
+    <p class="fl_left">Copyright &copy; 2013 - All Rights Reserved - <a href="/">GitBook</a></p>
     <p class="fl_right">Project by Ashwath Rajendran, Garima Agarwal and Suvodeep Pyne</a></p>
   </footer>
 </div>

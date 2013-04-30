@@ -85,7 +85,6 @@ class Recommender():
             with open(naive_prob_file, 'rb') as f:
                 print "Reading probabilities from the file"
                 self.project_vector = marshal.load(f)
-            with open(naive_prob_file, 'rb') as f:
                 self.categories = marshal.load(f)
                 print self.categories[0]
         except:
@@ -123,9 +122,7 @@ class Recommender():
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
-        pp.pprint(sorted_similar_projects)
 
-        #pp.pprint(self.user_ranking)
         sortedProjsLength = len(sorted_similar_projects)
         for i in range(0,len(sorted_similar_projects)):
           proj = sorted_similar_projects[i]
@@ -138,12 +135,20 @@ class Recommender():
             userIndex = userLists.index(owner)
             sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
             sorted_similar_projects[i]['owner'] = owner
+            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
+
           else:
             sorted_similar_projects[i]['page_rank_of_owner'] = 0
             sorted_similar_projects[i]['owner'] = owner
+            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
-        firstListToSort = sorted_similar_projects[]
+        """
+        firstListToSort = sorted_similar_projects[0:sortedProjsLength/2]
+        firstListToSort = sorted_similar_projects[sortedProjsLength/2 + 1 : sortedProjsLength*3/5 + sortedProjsLength/]
+        firstListToSort = sorted_similar_projects[0:sortedProjsLength/5]
+        """
+
 
 
 
