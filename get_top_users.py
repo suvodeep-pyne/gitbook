@@ -13,7 +13,7 @@ import marshal
 import cStringIO
 
 from subprocess import Popen, PIPE
-DIR = "user"
+DIR = "user_data"
 pp = pprint.PrettyPrinter(depth = 6)
 
 class ProcessUserData():
@@ -38,9 +38,9 @@ class ProcessUserData():
             file_h = open(filename)
             data = file_h.read()
             fields = data.split(" ")
-            self.user_file_count = fields[0]
-            self.project_file_count = fields[1]
-            followers = fields[2]
+            self.user_file_count = int(fields[0])
+            self.project_file_count = int(fields[1])
+            followers = int(fields[2])
             print self.user_file_count, self.project_file_count, followers
             return followers
         except IOError:
@@ -171,7 +171,8 @@ class CreateRequest():
 
     def get_followers(self, users):
         for user in users:
-            followers_url = "https://api.github.com/users/" + str(user) + "/followers"
+            print user
+            followers_url = "https://api.github.com/users/" + str(user) + "/following"
             params = ["Authorization: token " + str(self.token)]
             followers = self.curl_cmd(followers_url, params)
             if followers == None:
@@ -181,6 +182,7 @@ class CreateRequest():
             for follower in followers:
                 followers_list.append(follower["login"])
             self.user_follower_map[user] = followers_list
+            print self.user_follower_map[user]
     
     def get_repos(self, users):
         repo_base_url = "https://api.github.com/users/"
