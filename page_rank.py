@@ -85,7 +85,7 @@ def compute(user_graph):
             break
         iter_count += 1
 
-def pagerank(user, u_f_m):
+def pagerank(user):
     """
     if len(user_graph) == 0:
         sys.stderr.write('Error: No user graph created.\n')
@@ -95,7 +95,6 @@ def pagerank(user, u_f_m):
     t0 = time.clock()
     
     user_map = user
-    user_followers = u_f_m
     compute(user_map)
         
     # transfer your data into a more usable format
@@ -122,4 +121,4 @@ if __name__ == '__main__':
     directory_name = GITHUB_DATA
     data_retriever = DataRetriever(directory_name)
     user_data, user_follower_map = data_retriever.parseUserFollowers()
-    user_ranking = pagerank(user_data, user_follower_map)
+    #user_ranking = pagerank(user_data, user_follower_map)

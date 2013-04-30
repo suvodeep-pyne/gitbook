@@ -52,7 +52,7 @@ class CollectOrgs():
         project_contributors_org[proj] = company[u'login']
         orgsList.add(company[u'login'])
         break     # just take the first company
-      #"""
+      """
       if cnt > 2:
         #pp.pprint(projectList[proj])
         #print orgsList
@@ -63,14 +63,16 @@ class CollectOrgs():
       #pp.pprint(projectLOC)
 
     #print orgsList
-    #with open('project_contributors.p','wb') as fw: pickle.dump(project_contributors_org, fw)
+    with open('project_contributors.p','wb') as fw: pickle.dump(project_contributors_org, fw)
 
     with open('tmpProjs.p','rb') as fr: results = pickle.load(fr)
     print "results file"
     pp.pprint(results)
+    """
     for result in results:
         print 'printing what proj is: ',result[u'full_name']
         print result[u'url']
+    """
     
    
    
