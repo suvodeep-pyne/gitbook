@@ -138,16 +138,19 @@ class Recommender():
             #sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
             if len(self.project_data[proj['full_name']]['contributors']) >=1:
               sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
+              sorted_similar_projects[i]['contributors_url'] = self.project_data[proj['full_name']]['contributors'][0]['html_url']
             else:
               sorted_similar_projects[i]['contributors'] = ''
-
+              sorted_similar_projects[i]['contributors_url'] ='' 
           else:
             sorted_similar_projects[i]['page_rank_of_owner'] = 0
             sorted_similar_projects[i]['owner'] = owner[u'login']
             if len(self.project_data[proj['full_name']]['contributors']) >=1:
               sorted_similar_projects[i]['contributors'] = self.project_data[proj['full_name']]['contributors'][0]['login']
+              sorted_similar_projects[i]['contributors_url'] = self.project_data[proj['full_name']]['contributors'][0]['html_url']
             else:
               sorted_similar_projects[i]['contributors'] = ''
+              sorted_similar_projects[i]['contributors_url'] = ''
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
         # have the contributors tag with the first contributor for the server side handling
