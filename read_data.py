@@ -52,7 +52,7 @@ class DataRetriever():
                 if readme_dict != []:
                     readme = readme_dict["content"]
                     new_project["readme"] = base64.b64decode(readme) 
-                self.project_data[project[u'full_name']] = new_project
+                    self.project_data[project[u'full_name']] = new_project
             fh.close()
         return self.project_data
         
