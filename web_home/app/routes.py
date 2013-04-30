@@ -34,16 +34,16 @@ def results():
     for key in request_data:
       data[key] = request_data.getlist(key)
 
+    with open("app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
     projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
-  
-    """
-    		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
-  
-    """
-    companies = ['Google', 'facebook']
-    return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = companies)
   except:
     return redirect('/index')
+
+  """
+  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
+
+  """
+  return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = companies)
 
 @application.route('/layout')
 def layout():
