@@ -8,7 +8,7 @@ Licence: <a href="http://www.os-templates.com/template-terms">Website Template L
 
 html{overflow-y:scroll;} /* Forces a scrollbar when the viewport is larger than the websites content - CSS3 */
 
-body{margin:0; padding:0; font-size:13px; font-family:Georgia, "Times New Roman", Times, serif; color:#919191; background-color:#232323;}
+body{margin:0; padding:0; font-size:15px; font-family:Georgia, "Times New Roman", Times, serif; color:#919191; background-color:#232323;}
 
 .clear:after{content:"."; display:block; height:0; clear:both; visibility:hidden; line-height:0;}
 .clear{display:block; clear:both;}
@@ -41,8 +41,8 @@ div.wrapper{display:block; width:100%; margin:0; padding:0; text-align:left;}
 
 .row1, .row1 a{color:#C0BAB6; background-color:#333333;}
 .row2{color:#221818; background-color:#FFFFFF;}
-.row2 a{color:#0044DE; background-color:#FFFFFF;}	/* changing color of links from color:FF9900; to  color:#0044DE; */
-.row3, .row3 a{color:#919191; background-color:#232323;}
+.row2 a{color:#0044DE;}	/* changing color of links from color:FF9900; to  color:#0044DE; */
+.row3, .row3 a{color:#919191; background-color:#232323; }
 
 /*----------------------------------------------Generalise-------------------------------------*/
 

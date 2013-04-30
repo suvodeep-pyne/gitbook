@@ -4,7 +4,7 @@ Created on Apr 29, 2013
 @author: Suvodeep Pyne
 '''
 
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, redirect
 import pickle
  
 from app import application
@@ -28,19 +28,22 @@ def about():
 
 @application.route('/results', methods = ['GET', 'POST'])
 def results():
-  request_data = request.args
-  data = {}
-  for key in request_data:
-    data[key] = request_data.getlist(key)
+  try:
+    request_data = request.args
+    data = {}
+    for key in request_data:
+      data[key] = request_data.getlist(key)
 
-  projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
+    projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
   
-  """
-  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
-
-  """
-  companies = ['Google', 'facebook']
-  return render_template('results.html', areas_of_interest=data['area_of_interest'], results=projects , companies = companies)
+    """
+    		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
+  
+    """
+    companies = ['Google', 'facebook']
+    return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = companies)
+  except:
+    return redirect('/index')
 
 @application.route('/layout')
 def layout():

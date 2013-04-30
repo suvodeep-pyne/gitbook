@@ -1,3 +1,11 @@
+.result {
+	padding: 5px;
+	
+}
+.result:hover {
+	background-color:#FFFFD1;
+	
+}
 div.left_pane_wrapper {
     float: left;
     width: 100%;
