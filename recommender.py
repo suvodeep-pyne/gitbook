@@ -84,8 +84,8 @@ class Recommender():
         try:    
             with open(naive_prob_file, 'rb') as f:
                 print "Reading probabilities from the file"
-                self.project_vector = marshal.load(f)
-                self.categories = marshal.load(f)
+                self.project_vector = pickle.load(f)
+                self.categories = pickle.load(f)
                 print self.categories[0]
         except:
             print "Generating a new Naive Base classifier"
@@ -93,9 +93,9 @@ class Recommender():
             self.project_vector = self.project_vector_builder.build_projects_vector()
             self.categories = list(self.project_vector_builder.nb.clf.classes_)
             with open(naive_prob_file, 'wb') as f:
-                marshal.dump(self.project_vector, f)
+                pickle.dump(self.project_vector, f)
             with open(naive_prob_file, 'ab') as f:
-                marshal.dump(self.categories, f)
+                pickle.dump(self.categories, f)
 
         self.user_ranking = pagerank(self.user_data)
         with open(os.path.join(GITHUB_DATA, 'lang_to_projects.p'), 'rb') as f:
@@ -135,6 +135,7 @@ class Recommender():
             userIndex = userLists.index(owner[u'login'])
             sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
             sorted_similar_projects[i]['owner'] = owner[u'login']
+            #print 'owner: ', owner['login']
             #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
           else:
@@ -143,17 +144,30 @@ class Recommender():
             #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
-        """
-        firstListToSort = sorted_similar_projects[0:sortedProjsLength/2]
-        firstListToSort = sorted_similar_projects[sortedProjsLength/2 + 1 : sortedProjsLength*3/5 + sortedProjsLength/]
-        firstListToSort = sorted_similar_projects[0:sortedProjsLength/5]
-        """
 
 
+        #"""
+        if len(sorted_similar_projects) > 10:
+          firstListToSort = sorted_similar_projects[0:sortedProjsLength/2]
+          secListToSort = sorted_similar_projects[sortedProjsLength/2 + 1 : sortedProjsLength*4/5 ]
+          thirListToSort = sorted_similar_projects[sortedProjsLength*4/5 + 1 : ]
+          #"""
+         
+          sorted1 =  sorted(firstListToSort, key=lambda k: k['page_rank_of_owner'], reverse=True) 
+          sorted2 =  sorted(secListToSort, key=lambda k: k['page_rank_of_owner'], reverse=True) 
+          sorted3 =  sorted(thirListToSort, key=lambda k: k['page_rank_of_owner'], reverse=True) 
+         
+          #print len(sorted1)
+          #print len(sorted2)
+          #print len(sorted3)
+         
+          sorted1.extend(sorted2)
+          sorted3.extend(sorted1)
+          #pp.pprint(sorted3)
+         
+          #print 'lenght after merging all: ',len(sorted3)
 
-
-
-
+          return sorted3
 
         return sorted_similar_projects
 
