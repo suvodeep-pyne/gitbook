@@ -29,24 +29,18 @@ def about():
 @application.route('/results', methods = ['GET', 'POST'])
 def results():
   request_data = request.args
-  print request_data
-  #projects = gitbook.recommend_projects(self, languages, area_interest, difficulty)
+  data = {}
+  for key in request_data:
+    data[key] = request_data.getlist(key)
+
+  projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'], data['difficulty'])
   
   """
-  Compute the recommendation for the user using his preferences and assign it to the variable results.
-  Call the Recommender class here... integrate it with all!!
-  
-  This is where you will have to dump the Recommender's code
+  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob']
+
   """
-  
-  
-  #results = [{'projectName': 'login' , 'owner':'ownername'} , {'projectName': 'login' , 'owner':'ownername'}]
-  with open("app/tmpProjs.p","rb") as fr: results = pickle.load(fr)
-  with open("app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
-  
-  aoi = ['machine-learning', 'artificial-intelligence']
-  
-  return render_template('results.html' , areas_of_interest=aoi, results=results , companies = companies)
+  companies = ['Google', 'facebook']
+  return render_template('results.html', areas_of_interest=data['area_of_interest'], results=projects , companies = companies)
 
 @application.route('/layout')
 def layout():

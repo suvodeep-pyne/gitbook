@@ -19,7 +19,7 @@ class GitBook():
 		return self.recommender.get_aoi()
 		
 	def recommend_projects(self, languages, area_interest, difficulty):
-		return self.recommender.recommend_projects(self, languages, area_interest, difficulty) 
+		return self.recommender.recommend_projects(languages, area_interest, difficulty) 
 	
 if __name__ == '__main__':
     obj = GitBook()
