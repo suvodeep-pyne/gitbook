@@ -22,6 +22,7 @@ class NaiveBayesClassifier():
     tfidf_transformer = TfidfTransformer(norm = None)
     
     def __init__(self, keywords_path, dataset_path):
+        print 'Initializing NaiveBayesClassifier..'
         self.data_collector = NaiveBayesDataCollector(keywords_path, dataset_path)
         
         self.keywords = self.data_collector.keywords
