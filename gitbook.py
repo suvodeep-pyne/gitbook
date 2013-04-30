@@ -3,10 +3,9 @@ Created on Apr 29, 2013
 
 @author: Suvodeep Pyne
 '''
-
 from recommender import Recommender
 
-class GitBook():
+class GitBook():	
 	recommender = Recommender()
 	
 	def __init__(self):

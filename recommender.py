@@ -18,7 +18,7 @@ from collections import defaultdict
 from read_data import DataRetriever
 from nb_classifier import NaiveBayesClassifier
 
-GITHUB_DATA = 'data_ash'
+GITHUB_DATA = 'github_data'
 TRAIN_DATA = 'train_data'
 naive_prob_file = os.path.join(GITHUB_DATA, 'prob')
 class ProjectVectorBuilder():
@@ -61,20 +61,17 @@ class ProjectVectorBuilder():
 class Recommender():
     """Initialize the recommender"""
     def __init__(self):
+        print 'Initializing Recommender..'
         directory_name = GITHUB_DATA
-        print "Reading data..........."
         self.data_retriever = DataRetriever(directory_name)
-        print "Done reading data"
         self.project_data = self.data_retriever.parseProjectData()
         self.user_data, self.user_follower_map = self.data_retriever.parseUserFollowers()
-        print "Training Naive's Bayes classifier"
-        print "Trained!!!"
         self.language_proj = defaultdict()   
 
     def get_languages(self):
         lang_dict = {}
         
-        for lang in language_proj.keys():
+        for lang in self.language_proj.keys():
             _lang = lang.replace(' ','$')
             lang_dict[_lang] = lang
         return lang_dict        
