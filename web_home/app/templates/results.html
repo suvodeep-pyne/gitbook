@@ -36,14 +36,12 @@
         
 			<p style="color:red;">No results for projects classified in 
         {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
-        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
-        with difficulty level: {{data['difficulty'][0]}}
+        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %}
         </p>
 			{% else %}
         <p>Showing {{results_size}} search result{% if results_size > 1 %}s{% endif %} for projects classified in 
         {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
         written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
-        with difficulty level: {{data['difficulty'][0]}}
         </p>
 			<ul style="margin-top:0; margin-bottom:40px">
 			{% for result in results %}		<!-- for iterating through the list of normal proj dict objects -->	
@@ -70,7 +68,7 @@
 	  <nav>
 		<ul>
 		  {% for company in companies %}
-			<li><a href="#"> {{ company }} </a></li>
+			<li><a href="https://github.com/{{ company }}"> {{ company }} </a></li>
 		  {% endfor %}
 		</ul>
 	  </nav>
@@ -78,8 +76,10 @@
 	  <h2 class="title" > Recommended users to follow</h2>
 	  <nav>
 		<ul>
-			<li><a href="#"> Person Name </a></li>
-			<li><a href="#"> Person Name </a></li>
+		{% for result in contributors %}
+			<li><a href="{{result[1]}}"> {{result[0]}} </a></li>
+		{% endfor %}
+			
 		</ul>
 	  </nav>
 	  <!-- /nav -->
