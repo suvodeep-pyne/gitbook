@@ -5,10 +5,12 @@ Created on Apr 26, 2013
 Edited by Garima Agarwal
 '''
 
-import operator
-import pickle
-import pickle
+import os
 import cmd
+import pickle
+import pickle
+import marshal
+import operator
 import pprint as pp
 
 from page_rank import pagerank
@@ -18,7 +20,7 @@ from nb_classifier import NaiveBayesClassifier
 
 GITHUB_DATA = 'data_ash'
 TRAIN_DATA = 'train_data'
-
+naive_prob_file = os.path.join(GITHUB_DATA, 'prob')
 class ProjectVectorBuilder():
     
     projects = {}
@@ -52,6 +54,7 @@ class ProjectVectorBuilder():
             self.projects[name]['description'] = project['description']
             if len(prob_data) > 0:
                 self.projects[name]['category'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[0]
+                self.projects[name]['prob'] = max(prob_data.iteritems(), key=operator.itemgetter(1))[1]
         return self.projects
     
             
@@ -65,7 +68,6 @@ class Recommender():
         self.project_data = self.data_retriever.parseProjectData()
         self.user_data, self.user_follower_map = self.data_retriever.parseUserFollowers()
         print "Training Naive's Bayes classifier"
-        self.project_vector_builder = ProjectVectorBuilder(self.project_data)
         print "Trained!!!"
         self.language_proj = defaultdict()   
 
@@ -82,12 +84,22 @@ class Recommender():
     
     """Get different scores for each project"""
     def build_project_features(self):
-        self.project_vector = self.project_vector_builder.build_projects_vector()
+        try:    
+            with open(naive_prob_file, 'rb') as f:
+                print "Reading probabilities from the file"
+                self.project_vector = marshal.load(f)
+        except:
+            print "Generating a new Naive Base classifier"
+            self.project_vector_builder = ProjectVectorBuilder(self.project_data)
+            self.project_vector = self.project_vector_builder.build_projects_vector()
+            with open(naive_prob_file, 'wb') as f:
+                marshal.dump(self.project_vector, f)
+
         #self.user_ranking = pagerank(self.user_data, self.user_follower_map)
-        with open('lang_to_projects.p') as f:
+        with open(os.path.join(GITHUB_DATA, 'lang_to_projects.p'), 'rb') as f:
           self.language_proj = pickle.load(f)
         
-        with open('new_LOC.p','rb') as f:
+        with open(os.path.join(GITHUB_DATA, 'new_LOC.p'),'rb') as f:
           self.difficulty_score = pickle.load(f)
                  
     def recommend_projects(self, languages, area_interest, difficulty): 
@@ -96,6 +108,7 @@ class Recommender():
         print languages
         print area_interest
         print difficulty
+        #Filter based on languages
         for language in languages:
             projects = projects.union(self.language_proj[language]) 
         
@@ -104,9 +117,13 @@ class Recommender():
             if project not in self.project_vector:   continue
 
             if self.project_vector[project]['category'] in area_interest:
-                similar_projects.append(self.project_vector[project])
-            
-        pp.pprint(similar_projects)
+                project_desc = self.project_vector[project]
+                project_desc['html_url'] = self.project_data['html_url']
+                project_desc['full_name'] = self.project_data['full_name']
+                similar_projects.append(project_desc)
+        
+        sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
+        return sorted_similar_projects
 
 class CommandLineInterface(cmd.Cmd):
     
