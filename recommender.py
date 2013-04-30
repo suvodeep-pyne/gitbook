@@ -138,12 +138,20 @@ class Recommender():
             userIndex = userLists.index(owner)
             sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
             sorted_similar_projects[i]['owner'] = owner
+            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
+
           else:
             sorted_similar_projects[i]['page_rank_of_owner'] = 0
             sorted_similar_projects[i]['owner'] = owner
+            #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
-        firstListToSort = sorted_similar_projects[]
+        """
+        firstListToSort = sorted_similar_projects[0:sortedProjsLength/2]
+        firstListToSort = sorted_similar_projects[sortedProjsLength/2 + 1 : sortedProjsLength*3/5 + sortedProjsLength/]
+        firstListToSort = sorted_similar_projects[0:sortedProjsLength/5]
+        """
+
 
 
 
