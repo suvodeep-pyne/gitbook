@@ -38,7 +38,7 @@
 
 <div id="user_data">
  <!--  Commented the form here.. revoke back from this point if needed -->
-<!-- <form name="user_data" action="html_form_action.asp" method="post"> -->
+<form name="user_data" action="/results" method="get">
 
 <div class="left_pane_wrapper">
 <div class="left_pane">
@@ -48,7 +48,7 @@
 <div class="thefield">
 	<ul style="margin-top:0;">
 	{% for language in languages %}
-	<li><input type="checkbox" id="{{language}}" name="languages" value="" /> <label for="{{language}}">{{language}}</label></li>
+	<li><input type="checkbox" id="{{language}}" name="languages" value="{{language}}" /> <label for="{{language}}">{{language}}</label></li>
 	{% endfor %}
 	<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
 	</ul>
@@ -58,9 +58,9 @@
 <div class="fieldwrapper">
 	<label for="difficulty" class="styled">Choose Difficulty Level:</label>
 	<div class="thefield">
-		<input type="radio" id="easy" name="difficulty" value=""/> <label for="easy">easy</label>
-	<input type="radio" id="medium" name="difficulty" value="" /> <label for="medium">medium</label>
-	<input type="radio" id="hard" name="difficulty" value="" /> <label for="hard">hard</label>
+		<input type="radio" id="easy" name="difficulty" value="easy"/> <label for="easy">easy</label>
+	<input type="radio" id="medium" name="difficulty" value="medium" /> <label for="medium">medium</label>
+	<input type="radio" id="hard" name="difficulty" value="hard" /> <label for="hard">hard</label>
 	</div>
 </div>
 
@@ -74,7 +74,7 @@
 	<div class="thefield">
 	<ul style="margin-top:0;">
 		{% for aoi in areas_of_interest %}
-		<li><input type="checkbox" id="{{aoi}}" name="{{aoi}}" value=""/> <label for="{{aoi}}">{{aoi}}</label></li>
+		<li><input type="checkbox" id="{{aoi}}" name="{{aoi}}" value="{{aoi}}"/> <label for="{{aoi}}">{{aoi}}</label></li>
 		{% endfor %}
 	</ul>	
 	</div>
@@ -87,10 +87,12 @@
 <div id="clear"></div>
 
 <div id="submit_wrapper">
-	<!-- <input type="submit" id="submit" name="submit" value="Find Projects" > -->
+	<input type="submit" id="submit" name="submit" value="Find Projects" >
+<!--	
 	<a href="{{url_for('results')}}"><img src="{{ url_for('static', filename='img/github-logo.png') }}" width = 25% height =25% alt=""> Find projects</a>
+-->
 </div>
-<!-- </form> -->
+</form>
 
 
 <!--

@@ -1,9 +1,13 @@
 .project
 .pydevproject
 
+*.html~
 *.py~
 *.pyc
 *.tmp
 *.bak
 *.swp
 *.log
+
+web_home/app/gitbook
+
