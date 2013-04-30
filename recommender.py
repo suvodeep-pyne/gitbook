@@ -122,24 +122,24 @@ class Recommender():
                 similar_projects.append(project_desc)
         
         sorted_similar_projects = sorted(similar_projects, key=lambda k: k['prob'], reverse=True) 
-
+        pp.pprint(sorted_similar_projects)
+        zipped = map(list, zip(*self.user_ranking))
+        userLists = zipped[0]
+        PRs = zipped[1]
         sortedProjsLength = len(sorted_similar_projects)
         for i in range(0,len(sorted_similar_projects)):
           proj = sorted_similar_projects[i]
           project = self.project_data[proj[u'full_name']]
           owner = project[u'owner']
-          zipped = map(list, zip(*self.user_ranking))
-          userLists = zipped[0]
-          PRs = zipped[1]
-          if owner in userLists:
-            userIndex = userLists.index(owner)
+          if owner[u'login'] in userLists:
+            userIndex = userLists.index(owner[u'login'])
             sorted_similar_projects[i]['page_rank_of_owner'] = PRs[userIndex]
-            sorted_similar_projects[i]['owner'] = owner
+            sorted_similar_projects[i]['owner'] = owner[u'login']
             #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
           else:
             sorted_similar_projects[i]['page_rank_of_owner'] = 0
-            sorted_similar_projects[i]['owner'] = owner
+            sorted_similar_projects[i]['owner'] = owner[u'login']
             #sorted_similar_projects[i]['contributors'] = self.project_data[proj]['contributors']
 
         # sort the sorted_similar_projects based on the key 'page_rank_of_owner' value
