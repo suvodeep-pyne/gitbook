@@ -28,143 +28,72 @@
 <!-- content -->
 <div class="wrapper row2">
   <div id="container" class="clear">
-    <!-- Slider -->
-    <!--<section id="slider"><a href="#"><img src="{{ url_for('static', filename='img/demo/960x360.gif') }}" alt=""></a></section> -->
-
-    <!-- main content -->
-    <div id="homepage">
-      <!-- services area -->
-      <section id="services" class="clear">
-
-<div id="user_data">
-
-
-<div class="left_pane_wrapper">
-<div class="left_pane">
-
-<div id="results">
-<label for="languages" class="styled"> <h2>Here you go.. Some good stuff to work on! <br> </h2> </label>
-<div class="thefield">
-	<ul style="margin-top:0;">
-	{% for result in results %}		<!-- for iterating through the list of normal proj dict objects -->	
-	<li> <b> <a href = "{{result['html_url']}}" target="_blank"> {{result['full_name']}} </a> </b> <br\> </li>
-	<p>{{result['description']}}</p><br>
-	{% endfor %}
-	
-	
-	<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
-	</ul>
-</div>
-</div>
-<!-- <a href="{{ url_for('about') }}">Home</a> -->
-	<div style="float: left;" ><input type='button' onclick='changePage("prev")' value='Previous'/></div>
-	<label> pageNo </label>
-	<div style="float: right;" ><input type='button' onclick='changePage("next")' value='Next'/></div>
-</div>
-</div>
-<script type="text/javascript">
-document.pageNo = 0;
-function changePage(nextPrev){
-	var str;
-	if(nextPrev == 'next')
-	{
-		document.pageNo = document.pageNo + 1;	
-		str = getContent(document.pageNo+1)
-	}
-	else if (nextPrev == 'prev')
-	{	
-		document.pageNo = document.pageNo - 1;
-		str = getContent(document.pageNo-1);
-	}
-	
-	document.getElementById('results').innerHTML = str;
-}
-function getContent(pageNo){
-	var numResPerPage = {{resultsPerPage}}
-	var textInner = [ ' <label for=\"languages\" class=\"styled\">',' <h2>Here you go.. Some good stuff to work on! <br> </h2> </label>',
-	                  ' <div class=\"thefield\"><ul style=\"margin-top:0;\"> ',
-	                  '	{% for result in results[',(document.pageNo*numResPerPage)',':',((document.pageNo+1)*numResPerPage),']%}	',
-	                  ' <li> <b> <a href = \"',
-	                  ' {{result['html_url']}}\" ',
-	                  ' target=\"_blank\">',
-	                  ' {{result['full_name']}} </a> </b> <br> </li>',
-	                  ' <p>{{result['description']}}</p><br>','{% endfor %}','</ul></div>'].join(' ');  
-	
-	return textInner;
-}
-</script>
-
-<div class="right_pane">
-
-<div class="fieldwrapper">
-<div class="thefield">
-<aside id="right_column">
-      <h2 class="title">Looking for Companies?</h2>
-      <nav>
-        <ul>
-          {% for result in results %}
-          {% for company in companies %}
-          {% if result['full_name'] == company %}
-          	<li><a href="#"> {{ companies[company] }} </a></li>
-          {% endif %}
-          {% endfor %}
-          {% endfor %}
-        </ul>
-      </nav>
-      <!-- /nav -->
-    </aside>
-    <div id="clear"><br></div>
-    <aside id="right_column">
-      <h2 class="title" > Recommended users to follow</h2>
-      <nav>
-        <ul>
-          {% for result in results %}
-          	<li><a href="{{ result['contributors'][0]['html_url'] }}"> {{ result['contributors'][0]['login'] }} </a></li>
-          {% endfor %}
-        </ul>
-      </nav>
-      <!-- /nav -->
-    </aside>
-                 
-                  
-    
-    </div>
-</div>
-
-
-</div> <!-- Float Left div-->
-
-<div id="clear"></div>
-
-
-<!--
-
-<form name="input" action="html_form_action.asp" method="get">
-Username: <input type="text" name="user">
-<input type="submit" value="Submit">
-</form>
--->
-</div>
-
-      </section>
-      
-    </div>
     <!-- main content -->
     <div id="content">
-      <section id="posts" class="last clear">
-        <ul>
-          <li>
-            
-          </li>
-          
-        </ul>
+      <section id="results" class="last">
+        <div class="thefield">
+        {% if results_size == 0 %}
+        
+			<p style="color:red;">No results for projects classified in 
+        {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
+        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
+        with difficulty level: {{data['difficulty'][0]}}
+        </p>
+			{% else %}
+        <p>Showing {{results_size}} search results for projects classified in 
+        {% for v in data['area_of_interest'] %}{{v}}, {% endfor %}
+        written in languages: {% for v in data['languages'] %}{{v}}, {% endfor %} 
+        with difficulty level: {{data['difficulty'][0]}}
+        </p>
+			<ul style="margin-top:0; margin-bottom:40px">
+			{% for result in results %}		<!-- for iterating through the list of normal proj dict objects -->	
+			<li>
+			<div class="result"> 
+			<h3>Name: <a href = "{{result['html_url']}}" target="_blank"> {{result['full_name']}} </a> </h3>
+			<p>
+			Categorized as: {{result['category']}}
+			<br>Description: {{result['description']}}</p>
+			</div>
+			</li>
+			
+			{% endfor %}
+			
+			{% endif %}
+			<!--<li class="last"><input type="checkbox" id="php" name="languages" value="" /> <label for="php">PHP and Database</label></li> -->
+			</ul>
+		</div>
       </section>
     </div>
     <!-- right column -->
-    
+	<aside id="right_column">
+	  <h2 class="title">Recommended Organizations</h2>
+	  <nav>
+		<ul>
+			<li><a href="#"> Company Name </a></li>
+			<li><a href="#"> Company Name </a></li>
+		  {% for result in results %}
+		  {% for company in companies %}
+		  {% if result['full_name'] == company %}
+			<li><a href="#"> {{ companies[company] }} </a></li>
+		  {% endif %}
+		  {% endfor %}
+		  {% endfor %}
+		</ul>
+	  </nav>
+		<br></br>
+	  <h2 class="title" > Recommended users to follow</h2>
+	  <nav>
+		<ul>
+			<li><a href="#"> Person Name </a></li>
+			<li><a href="#"> Person Name </a></li>
+		</ul>
+	  </nav>
+	  <!-- /nav -->
+	</aside>
     <!-- / content body -->
   </div>
 </div>
+
 <!-- Footer -->
 <div class="wrapper row3">
   <footer id="footer" class="clear">
