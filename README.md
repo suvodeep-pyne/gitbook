@@ -12,5 +12,10 @@ Main Components
  - User Ranker: Ranks Github users according to their importance using pagerank
  - Web Interface: Built using Python Flask API
 
+Instructions to run
+ - Requires sklearn 0.14, flask
+ - clone using git clone git://github.com/suvodeep-pyne/gitbook
+ - Add a sym link inside app folder ln -s ../../ gitbook (TODO: refactor)
+ - run python web_home/run.py from parentmost directory of the project
 
 Language - python
