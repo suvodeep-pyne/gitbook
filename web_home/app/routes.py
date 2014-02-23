@@ -36,7 +36,7 @@ def results():
     for key in request_data:
       data[key] = request_data.getlist(key)
 
-    with open(rm.get_resource("project_contributors.p"),"rb") as fr: companies = pickle.load(fr)
+    with open(rm.PROJECTCONTRIBUTORS,"rb") as fr: companies = pickle.load(fr)
     projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'],'any')
   except:
     print "Exception occured"

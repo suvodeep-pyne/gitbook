@@ -7,9 +7,6 @@ import re
 import os
 import pprint as pp
 
-url = 'http://en.wikipedia.org/wiki/Machine_learning'
-
-CATEGORIES = [ 'Machine Learning', 'Artificial Intelligence']
 tokenizer_regex = "[a-zA-Z][a-zA-Z_-]+[a-zA-Z]";
 
 class NaiveBayesDataCollector():
@@ -19,6 +16,9 @@ class NaiveBayesDataCollector():
     target_classes = []
     
     def __init__(self, keywords_path, dataset_path):
+        assert os.path.exists(keywords_path)
+        assert os.path.exists(dataset_path)
+
         self.keywords_path = keywords_path
         self.dataset_path = dataset_path
         
@@ -67,10 +67,12 @@ class NaiveBayesDataCollector():
         print 'done.'
         
 if __name__ == "__main__":        
-    nb = NaiveBayesDataCollector('train_data\\vocabulary', 'train_data\\dataset')
+    from resource_manager import ResourceManager
+    rm = ResourceManager()
+    nb = NaiveBayesDataCollector(rm.TRAINDATA_VOCAB, rm.TRAINDATA_DATASET)
     
     print
-    print 'Keyword List:', nb.keywords
+    print '#Keywords:', len(nb.keywords)
     print 'Target classes:', nb.target_classes
     #for doc in nb.documents:
     #    print doc

@@ -17,9 +17,11 @@ from page_rank import pagerank
 from collections import defaultdict
 from read_data import DataRetriever
 from nb_classifier import NaiveBayesClassifier
+from resource_manager import ResourceManager
+
+rm = ResourceManager()
 
 GITHUB_DATA = 'github_data'
-TRAIN_DATA = 'train_data'
 naive_prob_file = os.path.join(GITHUB_DATA, 'prob')
 class ProjectVectorBuilder():
     
@@ -28,9 +30,8 @@ class ProjectVectorBuilder():
     def __init__(self, project_data):
         self.project_data = project_data
         
-        self.nb = NaiveBayesClassifier('train_data/vocabulary', 'train_data/dataset')
+        self.nb = NaiveBayesClassifier(rm.TRAINDATA_VOCAB, rm.TRAINDATA_DATASET)
         self.nb.train()
-    
     
     def build_projects_vector(self):
         print "In build projects"

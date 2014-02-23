@@ -29,7 +29,7 @@ class NaiveBayesClassifier():
         self.documents = self.data_collector.documents
         self.target_classes = self.data_collector.target_classes
         
-        self.count_vectorizer = CountVectorizer(min_df = 1, tokenizer=tokenize, vocabulary = self.keywords)
+        self.count_vectorizer = CountVectorizer(min_df=1, tokenizer=tokenize, vocabulary = self.keywords)
     
     def train(self):
         print 'Training Naive Bayes..'
@@ -80,9 +80,11 @@ class NaiveBayesClassifier():
         return return_val
             
 if __name__ == "__main__":        
-    nb = NaiveBayesClassifier('train_data/vocabulary', 'train_data/dataset')
+    from resource_manager import ResourceManager
+    rm = ResourceManager()
+    nb = NaiveBayesClassifier(rm.TRAINDATA_VOCAB, rm.TRAINDATA_DATASET)
     nb.train()
-    docs_new = ['asdfasdfasdf']
+    docs_new = ['regression']
     #docs_new = ['asdfasdfasdf', 'jquery', 'data mining', 'regression', 'search', 'vector space', 'Knowledge Discovery', 'Kernel']
     result = nb.classify(docs_new)
     

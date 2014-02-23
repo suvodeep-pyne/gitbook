@@ -24,8 +24,22 @@ class GitBook():
         return self.recommender.recommend_projects(languages, area_interest, difficulty) 
     
 if __name__ == '__main__':
-    obj = GitBook()
-    obj.init()
-    print 'Languages:', obj.get_languages()
-    print 'Areas of Interest:', obj.get_areas_of_interest()
+    print "GitBook class Test Module"
+    gitbook = GitBook()
+
+    print "calling gitbook.init()"
+    gitbook.init()
+    print 'Languages:', gitbook.get_languages()
+    print 'Areas of Interest:', gitbook.get_areas_of_interest()
+
+    print
+    print '#Languages', len(gitbook.get_languages()), 'Expected: 53'
+    print '#Areas of Interest:', len(gitbook.get_areas_of_interest()), 'Expected 7'
+
+    print
+    print 'Test #1'
+    languages = [ u'Python' ]
+    aoi = ['Information Retrieval', 'Machine Learning']
+    print '#Results:', len(gitbook.recommend_projects(languages, aoi, 'any')), 'Expected: 7'
+
     print 'Done.'    
