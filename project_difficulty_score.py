@@ -8,8 +8,6 @@ import json
 import time
 import pprint
 import requests
-from collections import defaultdict
-from read_data import *
 import curl
 import pycurl
 import urllib
@@ -19,6 +17,11 @@ import cStringIO
 import math
 import copy
 
+from collections import defaultdict
+from read_data import *
+from resource_manager import ResourceManager
+
+rm = ResourceManager()
 pp = pprint.PrettyPrinter(depth = 6)
 
 class ProjectDifficultyCalculator():
@@ -32,7 +35,7 @@ class ProjectDifficultyCalculator():
   def readDataAndDump(self):
     pp = pprint.PrettyPrinter(depth = 6)
     allProjects = defaultdict()
-    with open('LOC.txt','rb') as f:
+    with open(rm.LOC,'rb') as f:
       print "loading the dict from pickle file.. please wait.. "
       cnt =0
       while 1:
@@ -91,15 +94,6 @@ class ProjectDifficultyCalculator():
           del allProjects[proj][lang]         # delete the same language in the original allProjects dict as well
 
     # print 'projects after throwing away langs'
-
-    # newProjects has projects after throwing away langs which are unnecessary
-    #pp.pprint(newProjects)
-    #pp.pprint(allProjects)
-
-
-
-
-
     # scale it all from 0 to 1 --> 1 is the max project's score. divide every lang's score by that max score
     maxScore = defaultdict()
     for lang in allProjLang:
@@ -139,24 +133,9 @@ class ProjectDifficultyCalculator():
     print "pickle has dumped proj and list of langs to new_LOC.p file.. unpickle and integrate"
 
 
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
 if __name__ == '__main__':
     #obj = createRequest()
     #obj.get_auth_token()
     #obj.get_top_users_with_followers(6000, 20000)  
     locObj =ProjectDifficultyCalculator()
     locObj.readDataAndDump()
-

@@ -22,6 +22,7 @@ class DataRetriever():
     init function, takes the directory name which has the data files
     """
     def __init__(self, directory):
+        assert os.path.exists(directory)
         self.directory = directory
         self.project_data = {}
         self.user_data = []

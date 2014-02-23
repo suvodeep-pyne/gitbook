@@ -11,8 +11,6 @@ import json
 import time
 import pprint
 import requests
-from collections import defaultdict
-from read_data import *
 import curl
 import pycurl
 import urllib
@@ -20,18 +18,23 @@ import marshal
 import pickle
 import cStringIO
 
+from collections import defaultdict
+from read_data import *
+from resource_manager import ResourceManager
+
+rm = ResourceManager()
 pp = pprint.PrettyPrinter(depth = 4)
 
 class getLOC():
   def getAllLOCandDump(self):
-    fw = open('LOC.txt','ab')
+    fw = open(rm.LOC,'ab')
     
     obj = createRequest()
     obj.get_auth_token()
     projectLOC = defaultdict()
     prevTime = time.time()
     numReq = 0
-    projectDataObject = DataRetriever('./github_data')
+    projectDataObject = DataRetriever(rm.CACHE)
     projectList = projectDataObject.parseProjectData()
     print "there are ", len(projectList) , " projects"
     cnt=0
@@ -59,7 +62,6 @@ class createRequest():
        self.user_id = self.git_config_get('user.name')
        self.pwd = self.git_config_get('user.password')
        self.start_page = 1
-       #self.parser = processUserData("/home/ash/code/IR/gitbook/github_data")
 
        if self.user_id == None or self.pwd == None:
            print "Error getting username or password"
@@ -194,8 +196,5 @@ class createRequest():
            self.parser.dump_all_data(follower_count_cap)
 
 if __name__ == '__main__':
-    #obj = createRequest()
-    #obj.get_auth_token()
-    #obj.get_top_users_with_followers(6000, 20000)  
     locObj = getLOC()
     locObj.getAllLOCandDump()

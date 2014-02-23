@@ -21,7 +21,6 @@ from resource_manager import ResourceManager
 
 rm = ResourceManager()
 
-GITHUB_DATA = rm.CACHE
 class ProjectVectorBuilder():
     
     projects = {}
@@ -62,7 +61,7 @@ class Recommender():
     """Initialize the recommender"""
     def __init__(self):
         print 'Initializing Recommender..'
-        directory_name = GITHUB_DATA
+        directory_name = rm.CACHE
         self.data_retriever = DataRetriever(directory_name)
         self.project_data = self.data_retriever.parseProjectData()
         self.user_data, self.user_follower_map = self.data_retriever.parseUserFollowers()
@@ -101,10 +100,10 @@ class Recommender():
                 pickle.dump(self.categories, f)
 
         self.user_ranking = pagerank(self.user_data)
-        with open(os.path.join(GITHUB_DATA, 'lang_to_projects.p'), 'rb') as f:
+        with open(os.path.join(rm.CACHE, 'lang_to_projects.p'), 'rb') as f:
           self.language_proj = pickle.load(f)
         
-        with open(os.path.join(GITHUB_DATA, 'new_LOC.p'),'rb') as f:
+        with open(os.path.join(rm.CACHE, 'new_LOC.p'),'rb') as f:
           self.difficulty_score = pickle.load(f)
                  
     def recommend_projects(self, languages, area_interest, difficulty): 
