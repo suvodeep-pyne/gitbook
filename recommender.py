@@ -21,8 +21,7 @@ from resource_manager import ResourceManager
 
 rm = ResourceManager()
 
-GITHUB_DATA = 'github_data'
-naive_prob_file = os.path.join(GITHUB_DATA, 'prob')
+GITHUB_DATA = rm.CACHE
 class ProjectVectorBuilder():
     
     projects = {}
@@ -83,19 +82,22 @@ class Recommender():
     """Get different scores for each project"""
     def build_project_features(self):
         try:    
-            with open(naive_prob_file, 'rb') as f:
-                print "Reading probabilities from the file"
+            with open(rm.NB_PROB, 'rb') as f:
+                print "Reading probabilities from:", rm.NB_PROB
                 self.project_vector = pickle.load(f)
                 self.categories = pickle.load(f)
-                print self.categories[0]
+
+                print 'done.'
+                print '#Projects:', len(self.project_vector)
+                print '#Categories:', len(self.categories)
         except:
             print "Generating a new Naive Base classifier"
             self.project_vector_builder = ProjectVectorBuilder(self.project_data)
             self.project_vector = self.project_vector_builder.build_projects_vector()
             self.categories = list(self.project_vector_builder.nb.clf.classes_)
-            with open(naive_prob_file, 'wb') as f:
+            with open(rm.NB_PROB, 'wb') as f:
                 pickle.dump(self.project_vector, f)
-            with open(naive_prob_file, 'ab') as f:
+            with open(rm.NB_PROB, 'ab') as f:
                 pickle.dump(self.categories, f)
 
         self.user_ranking = pagerank(self.user_data)
@@ -211,10 +213,3 @@ class CommandLineInterface(cmd.Cmd):
 if __name__ == '__main__':
     cmi = CommandLineInterface()
     cmi.cmdloop()
-    #print obj.get_languages()
-    print "Getting recommended projects"
-    print 'Printing projects Data Structure'
-    #pp.pprint(obj.projects)
-    #pp.pprint(obj.project_vector)
-    #pp.pprint(obj.user_ranking[0:10])
-    
