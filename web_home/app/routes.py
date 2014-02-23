@@ -13,6 +13,8 @@ from app import application
 from app.gitbook.gitbook import GitBook
 
 gitbook = GitBook()
+gitbook.init()
+rm = gitbook.rm
 
 @application.route('/')
 @application.route('/index')
@@ -23,7 +25,7 @@ def home():
 
 @application.route('/about')
 def about():
-  print "this is printed whenever the about page is called!!!!!!!!!!!!!!!!!!!!!!!"
+  print "this is printed whenever the about page is called!"
   return render_template('about.html')
 
 @application.route('/results', methods = ['GET', 'POST'])
@@ -34,9 +36,10 @@ def results():
     for key in request_data:
       data[key] = request_data.getlist(key)
 
-    with open("app/project_contributors.p","rb") as fr: companies = pickle.load(fr)
+    with open(rm.get_resource("project_contributors.p"),"rb") as fr: companies = pickle.load(fr)
     projects = gitbook.recommend_projects(data['languages'], data['area_of_interest'],'any')
   except:
+    print "Exception occured"
     return redirect('/index')
   
   output_companies = []
@@ -54,8 +57,7 @@ def results():
   output_contributors = output_contributors[:10]
 
   """
-  		Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob' , 'contributors' ]
-
+        Project data keys : ['category', 'description', 'html_url', 'class_prob', 'full_name', 'prob' , 'contributors' ]
   """
   return render_template('results.html', data=data, results=projects , results_size=len(projects), companies = output_companies, contributors= output_contributors)
 
