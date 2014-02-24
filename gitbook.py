@@ -42,4 +42,10 @@ if __name__ == '__main__':
     aoi = ['Information Retrieval', 'Machine Learning']
     print '#Results:', len(gitbook.recommend_projects(languages, aoi, 'any')), 'Expected: 7'
 
+    print
+    print 'Test #2'
+    languages = [ u'JavaScript' ]
+    aoi = ['Web']
+    print '#Results:', len(gitbook.recommend_projects(languages, aoi, 'any')), 'Expected: 101'
+
     print 'Done.'    

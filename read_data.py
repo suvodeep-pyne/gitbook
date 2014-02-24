@@ -36,7 +36,7 @@ class DataRetriever():
         if projdir is None: projdir = rm.PROJECTDATA 
         assert os.path.exists(projdir)
 
-        print 'parseProjectData: Reading projects..'
+        print 'parseProjectData: Reading projects from', projdir
         for files in os.listdir(projdir):
             if not fnmatch.fnmatch(files, "project[0-9]*"):
                 continue
@@ -66,6 +66,7 @@ class DataRetriever():
     def parseUserData(self, userdir=None): 
         if userdir is None: userdir = rm.USERDATA
         assert os.path.exists(userdir)
+        print 'parseUserData: Reading user data from', userdir
 
         for files in os.listdir(userdir):
             if not fnmatch.fnmatch(files, "user[0-9]*"):
