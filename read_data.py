@@ -14,6 +14,8 @@ import marshal
 import pprint as pp
 
 
+from resource_manager import ResourceManager
+rm = ResourceManager()
 """
 Class which reads data from all the files in a directory and populates the data structure
 """
@@ -29,14 +31,16 @@ class DataRetriever():
         self.user_dict = {}
         self.user_followers = {}
 
-
     """Builds project data structure"""
-    def parseProjectData(self):
-        for files in os.listdir(self.directory):
+    def parseProjectData(self, projdir=None):
+        if projdir is None: projdir = rm.PROJECTDATA 
+        assert os.path.exists(projdir)
+
+        print 'parseProjectData: Reading projects..'
+        for files in os.listdir(projdir):
             if not fnmatch.fnmatch(files, "project[0-9]*"):
                 continue
-            filename = os.path.join(self.directory, files)
-            print filename
+            filename = os.path.join(projdir, files)
             fh = open(filename,"rb")
             data = marshal.load(fh)
             for project in data:
@@ -55,35 +59,43 @@ class DataRetriever():
                     new_project["readme"] = base64.b64decode(readme) 
                     self.project_data[project[u'full_name']] = new_project
             fh.close()
+        print 'parseProjectData: parsed {0} projects'.format(len(self.project_data))
         return self.project_data
         
     """Builds user data structure"""
-    def parseUserData(self): 
-        for files in os.listdir(self.directory):
+    def parseUserData(self, userdir=None): 
+        if userdir is None: userdir = rm.USERDATA
+        assert os.path.exists(userdir)
+
+        for files in os.listdir(userdir):
             if not fnmatch.fnmatch(files, "user[0-9]*"):
                 continue
-            filename = os.path.join(self.directory, files)
+            filename = os.path.join(userdir, files)
             fh = open(filename,"rb")
             users = marshal.load(fh)
             self.user_data.extend(users)
             for user in users:
                 self.user_followers[user["username"]] = user["followers"]
             fh.close()
+        print 'parseUserData: parsed {0} users'.format(len(self.user_data))
 
     """Builds the followers data structures"""
-    def parseUserFollowers(self):
-        self.parseUserData()
-        for files in os.listdir(self.directory):
+    def parseUserFollowers(self, userdir=None):
+        if userdir is None: userdir = rm.USERDATA
+        assert os.path.exists(userdir)
+
+        self.parseUserData(userdir)
+        for files in os.listdir(userdir):
             if not fnmatch.fnmatch(files, "user_followers_map*"):
                 continue
-            filename = os.path.join(self.directory, files)
+            filename = os.path.join(userdir, files)
             fh = open(filename,"rb")
             users_map = marshal.load(fh)
             self.user_dict = dict(self.user_dict.items() + users_map.items())
         return self.user_dict, self.user_followers        
     
 if __name__ == '__main__':
-    dirname = sys.argv[1]
+    dirname = rm.CACHE
     obj = DataRetriever(dirname)
     project = obj.parseProjectData()
-    pp.pprint(len(project))
+    userdata = obj.parseUserFollowers()

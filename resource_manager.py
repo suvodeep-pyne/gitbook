@@ -13,10 +13,14 @@ join = os.path.join
 class ResourceManager():
     DATA = 'data'
     CACHE = join(DATA, 'cache')
+    CRAWL = join(DATA, 'crawl')
 
     TRAINDATA = join(DATA, 'train_data')
     TRAINDATA_VOCAB = join(TRAINDATA, 'vocabulary')
     TRAINDATA_DATASET = join(TRAINDATA, 'dataset')
+
+    PROJECTDATA = join(CRAWL, 'projects')
+    USERDATA = join(CRAWL, 'users')
 
     NB_PROB = join(CACHE, 'nb_prob')
     LOC = join(DATA, 'proj_loc')
